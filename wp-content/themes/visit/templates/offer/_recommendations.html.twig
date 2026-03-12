@@ -1,0 +1,31 @@
+{# ── Recommendation ── #}
+        {% if detail.recommendation %}
+            <div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <div class="flex items-start gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5 mt-0.5 text-amber-600 shrink-0">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904m.729-14.1a3 3 0 00-2.384 1.172C3.528 8.39 3 9.62 3 11v4.5a3 3 0 006 0V10.25"/>
+                    </svg>
+                    <div>
+                        <span class="block text-sm font-medium text-amber-800 mb-1">{{ 'offer.recommendation'|trans|default('Recommandation') }}</span>
+                        <p class="text-sm text-amber-700">{{ detail.recommendation }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# ── Homepage Link ──
+        {% if detail.homepage %}
+            <div class="mb-6">
+                <a href="{{ detail.homepage }}" target="_blank" rel="noopener"
+                   class="inline-flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 text-sm text-caractere hover:bg-cta-light hover:text-white transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/>
+                    </svg>
+                    {{ 'offer.website'|trans|default('Site web') }}
+                </a>
+            </div>
+        {% endif %}#}

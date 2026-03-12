@@ -1,0 +1,72 @@
+<section class="min-h-[80vh] bg-gradient-to-b from-slate-100 via-slate-50 to-white flex items-center justify-center py-16 px-4 mt-16">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Animated illustration -->
+        <div class="relative mb-8">
+            <!-- Compass circle -->
+            <div class="w-40 h-40 mx-auto relative">
+                <div class="absolute inset-0 rounded-full border-4 border-slate-200 bg-white shadow-lg"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-slate-100"></div>
+                <!-- Compass needle (spinning animation) -->
+                <div class="absolute inset-0 flex items-center justify-center animate-pulse">
+                    <div class="w-1 h-16 bg-gradient-to-b from-cta-dark to-slate-400 rounded-full transform -translate-y-2"></div>
+                </div>
+                <!-- Center dot -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-4 h-4 rounded-full bg-cta-dark shadow-md"></div>
+                </div>
+                <!-- Cardinal directions -->
+                <span class="absolute top-3 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-500">N</span>
+                <span class="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-400">S</span>
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">O</span>
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">E</span>
+            </div>
+            <!-- 404 badge -->
+            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-cta-dark text-white text-2xl font-bold px-6 py-2 rounded-full shadow-lg">
+                404
+            </div>
+        </div>
+
+        <!-- Message -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-700 mb-4">
+            {{ 'error.not_found_title'|trans }}
+        </h1>
+        <p class="text-lg text-slate-500 mb-8 max-w-md mx-auto">
+            {{ 'error.not_found_description'|trans }}
+        </p>
+
+        <!-- CTA Button -->
+        <a href="/"
+           class="inline-flex items-center gap-3 bg-cta-dark hover:bg-slate-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl motion-safe:hover:-translate-y-1 transition-all duration-300">
+            <i class="fas fa-home text-xl"></i>
+            <span>{{ 'url.back_home'|trans }}</span>
+        </a>
+
+        <!-- Quick links -->
+        <div class="mt-12 pt-8 border-t border-slate-200">
+            <p class="text-sm text-slate-400 mb-4">{{ 'error.explore_pages'|trans }}</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="/administration/category/12"
+                   class="group flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-cta-dark hover:shadow-md transition-all duration-200">
+                    <i class="fas fa-building text-slate-400 group-hover:text-cta-dark transition-colors"></i>
+                    <span class="text-sm text-slate-600 group-hover:text-slate-800">Services communaux</span>
+                </a>
+                <a href="/tourisme/agenda-des-manifestations"
+                   class="group flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-cta-dark hover:shadow-md transition-all duration-200">
+                    <i class="fas fa-calendar-alt text-slate-400 group-hover:text-cta-dark transition-colors"></i>
+                    <span class="text-sm text-slate-600 group-hover:text-slate-800">Agenda</span>
+                </a>
+                <a href="https://eguichet.marche.be"
+                   class="group flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-cta-dark hover:shadow-md transition-all duration-200">
+                    <i class="fas fa-file-alt text-slate-400 group-hover:text-cta-dark transition-colors"></i>
+                    <span class="text-sm text-slate-600 group-hover:text-slate-800">E-Guichet</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact hint -->
+        <p class="mt-10 text-sm text-slate-400">
+            {{ 'error.looking_for'|trans }}
+            <a href="mailto:info@marche.be" class="text-cta-dark hover:underline">{{ 'error.contact_us'|trans }}</a>
+        </p>
+    </div>
+</section>

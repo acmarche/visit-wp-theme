@@ -1,0 +1,188 @@
+<div class="wrap">
+    <h2>
+        Offres Pivot sur la catégorie <strong><a href="{{ categoryUrl }}"
+                                                 title="Voir sur le site">{{ category.name }}</a></strong>
+    </h2>
+    <div class="notice notice-info update-nag inline">
+        <p>Effectuez une recherche sur le nom ou le code de l'offre</p>
+    </div>
+    <div id="offers-box"
+         x-data="categoryOffers()"
+         x-init="loadOffers()"
+         style="position: relative;">
+
+        {% if children|length > 0 %}
+            {% include '@Visit/admin/_children_error.html.twig' %}
+        {% else %}
+            <div style="margin: 15px 0;">
+                <label for="search-offer"><strong>Rechercher une offre :</strong></label>
+                <input type="text"
+                       id="search-offer"
+                       x-model="search"
+                       @input.debounce.300ms="searchOffers()"
+                       @click.outside="suggestions = []"
+                       placeholder="Nom ou code CGT..."
+                       class="regular-text"
+                       autocomplete="off">
+                <span x-show="loading" style="margin-left: 8px;">Chargement...</span>
+            </div>
+        {% endif %}
+
+        <ul x-show="suggestions.length > 0"
+            style="position: absolute; z-index: 100; background: #fff; border: 1px solid #ccc; max-height: 300px; overflow-y: auto; list-style: none; margin: 0; padding: 0; width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+            <template x-for="s in suggestions" :key="s.codeCgt">
+                <li @click="addOffer(s)"
+                    style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee;"
+                    @mouseenter="$el.style.backgroundColor='#f0f0f1'"
+                    @mouseleave="$el.style.backgroundColor='#fff'">
+                    <strong x-text="s.codeCgt"></strong> &mdash; <span x-text="s.name"></span>
+                    <em x-show="s.type" style="color: #666; margin-left: 8px;" x-text="'(' + s.type + ')'"></em>
+                </li>
+            </template>
+        </ul>
+
+        <div x-show="message" x-text="message"
+             style="margin: 10px 0; padding: 8px 12px; background: #d4edda; border: 1px solid #c3e6cb; color: #155724;"
+             x-transition></div>
+
+        <div x-show="loadingOffers" style="margin: 20px 0; text-align: center;">
+            <span class="spinner is-active" style="float: none;"></span>
+            <span style="margin-left: 4px;">Chargement des offres...</span>
+        </div>
+
+        <table x-show="!loadingOffers" class="wp-list-table widefat fixed striped" style="margin-top: 15px;">
+            <thead>
+            <tr>
+                <th style="width: 200px;">Code CGT</th>
+                <th>Nom</th>
+                <th style="width: 150px;">Type</th>
+                <th style="width: 100px;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template x-for="offer in offers" :key="offer.codeCgt">
+                <tr>
+                    <td>
+                        <a :href="'{{ ''|routeOfferToPivotSite }}' + offer.codeCgt"
+                           target="_blank" rel="noopener noreferrer"
+                           title="Gérer l'offre dans Pivot"
+                           x-text="offer.codeCgt"></a>
+                    </td>
+                    <td>
+                        <a :href="'{{ ''|routeOfferToSite }}' + offer.codeCgt"
+                           target="_blank" rel="noopener noreferrer"
+                           title="Voir sur le site"
+                           x-text="offer.name"></a>
+                    </td>
+                    <td x-text="offer.type || ''"></td>
+                    <td>
+                        <button type="button"
+                                class="button button-link-delete"
+                                @click="removeOffer(offer.codeCgt)">Supprimer
+                        </button>
+                    </td>
+                </tr>
+            </template>
+            <tr x-show="offers.length === 0">
+                <td colspan="4"><em>Aucune offre liée à cette catégorie</em></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function categoryOffers() {
+        return {
+            search: '',
+            suggestions: [],
+            offers: [],
+            loading: false,
+            loadingOffers: false,
+            message: '',
+
+            async loadOffers() {
+                this.loadingOffers = true;
+                try {
+                    const response = await fetch(pivotOffers.restUrl + '/category_offers/' + pivotOffers.catId, {
+                        headers: {'X-WP-Nonce': pivotOffers.restNonce}
+                    });
+                    this.offers = await response.json();
+                } catch (e) {
+                    console.error('Error loading offers:', e);
+                } finally {
+                    this.loadingOffers = false;
+                }
+            },
+
+            async searchOffers() {
+                if (this.search.length < 2) {
+                    this.suggestions = [];
+                    return;
+                }
+                this.loading = true;
+                try {
+                    const response = await fetch(
+                        pivotOffers.restUrl + '/find-offers-by-name/' + encodeURIComponent(this.search),
+                        {headers: {'X-WP-Nonce': pivotOffers.restNonce}}
+                    );
+                    this.suggestions = await response.json();
+                } catch (e) {
+                    console.error('Error searching offers:', e);
+                    this.suggestions = [];
+                } finally {
+                    this.loading = false;
+                }
+            },
+
+            async addOffer(offer) {
+                this.suggestions = [];
+                this.search = '';
+                const formData = new FormData();
+                formData.append('action', 'action_add_offer');
+                formData.append('_ajax_nonce', pivotOffers.nonce);
+                formData.append('categoryId', pivotOffers.catId);
+                formData.append('codeCgt', offer.codeCgt);
+
+                try {
+                    const response = await fetch(pivotOffers.ajaxUrl, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    await response.json();
+                    this.showMessage('Offre ajoutée : ' + offer.name);
+                    await this.loadOffers();
+                } catch (e) {
+                    console.error('Error adding offer:', e);
+                }
+            },
+
+            async removeOffer(codeCgt) {
+                if (!confirm('Supprimer cette offre ?')) return;
+
+                const formData = new FormData();
+                formData.append('action', 'action_delete_offer');
+                formData.append('_ajax_nonce', pivotOffers.nonce);
+                formData.append('categoryId', pivotOffers.catId);
+                formData.append('codeCgt', codeCgt);
+
+                try {
+                    const response = await fetch(pivotOffers.ajaxUrl, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    await response.json();
+                    this.showMessage('Offre supprimée');
+                    await this.loadOffers();
+                } catch (e) {
+                    console.error('Error removing offer:', e);
+                }
+            },
+
+            showMessage(text) {
+                this.message = text;
+                setTimeout(() => this.message = '', 3000);
+            }
+        };
+    }
+</script>

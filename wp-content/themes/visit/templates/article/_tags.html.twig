@@ -1,0 +1,13 @@
+<ul class="flex flex-wrap gap-2">
+    {% for tag in tags %}
+        <li>
+            <a href="{{ tag.url ?? '/' }}"
+               class="inline-block rounded-full border border-caractere px-3 py-1.5 text-sm text-caractere whitespace-nowrap
+                      transition-colors duration-200
+                      hover:bg-cta-light hover:text-white hover:border-cta-light
+                      focus-visible:ring-2 focus-visible:ring-cta-light focus-visible:ring-offset-2">
+                {{ tag.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,58 @@
+/* J'ajoute ici car commande npx tailwindcss ne prend pas ce qui est entre <style> */
+
+.bg-home-img {
+  background-image: url('/wp-content/themes/visittail/assets/images/home_ville2.jpg');
+}
+
+li.nav-top-xl {
+  @apply transition-all duration-300 ease-in-out hover:border-b-4 hover:border-cta-light
+}
+
+.btn-vivre:hover > nav {
+  @apply xl:block
+}
+
+.icon-menu-mobile {
+  @apply my-4 flex flex-col flex-wrap items-center justify-center font-semibold;
+}
+
+.text-menu-mobile {
+  @apply text-xs font-light;
+}
+
+.musshadow {
+  box-shadow: 0 -0.125rem 0.45rem rgba(0, 0, 0, 0.75);
+}
+
+#checkboxShortCut:checked ~ div {
+  @apply opacity-100;
+}
+
+#checkboxShortCut {
+  display: none;
+}
+
+figcaption {
+  @apply bg-caractere opacity-60 text-white p-4;
+}
+
+.divcontact{
+  @apply grid grid-cols-[3rem,1fr] justify-items-start justify-start mt-3;
+}
+
+.gallery-offre a:first-child {
+  grid-column: span 3;
+}
+
+/* Style for block elements, like project card */
+.block-item {
+  @apply rounded-3xl;
+  @apply bg-white;
+  @apply w-96 mx-auto my-16;
+}
+
+/* Gradient colors */
+.gradient-purple-pink-red {
+  @apply bg-linear-to-r;
+  @apply from-purple-400 via-pink-500 to-red-500;
+}

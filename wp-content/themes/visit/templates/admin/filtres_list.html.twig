@@ -1,0 +1,23 @@
+<!--CONTENT-->
+<div class="wrap">
+    <h2>Les types d'offers</h2>
+    <table class="wp-list-table widefat fixed striped table-view-list toplevel_page_pivot_list">
+        <tr>
+            <th scope="col" id="booktitle" class="manage-column column-booktitle column-primary">
+                Lvl1
+            </th>
+            <th scope="col" id="booktitle" class="manage-column column-booktitle column-primary">
+                Lvl2
+            </th>
+            <th scope="col" id="booktitle" class="manage-column column-booktitle column-primary">
+                Urn
+            </th>
+            <th scope="col" id="booktitle" class="manage-column column-booktitle column-primary">
+                Count
+            </th>
+        </tr>
+        {% for root in filters %}
+            {% include '@Visit/admin/_filtre_line.html.twig' %}
+        {% endfor %}
+    </table>
+</div>

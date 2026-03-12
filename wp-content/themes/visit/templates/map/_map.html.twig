@@ -1,0 +1,11 @@
+{% if latitude and longitude %}
+
+    <div id="openmap_offre" class=""
+         data-latitude="{{ latitude }}"
+         data-longitude="{{ longitude }}"
+         data-locations="{{ locations|json_encode }}"
+         data-pois="{{ offre.pois|json_encode }}">
+    </div>
+
+
+{% endif %}

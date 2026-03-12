@@ -1,0 +1,145 @@
+agenda:
+  name: 'Agenda'
+  moreevents: 'Laad meer evenementen'
+all:
+  experiences: 'Alle inspiraties'
+article:
+  address: 'Adres'
+  contact: 'Contact'
+  copy_link: 'Link kopiëren'
+  email: 'E-mailadres'
+  notfound: 'Geen artikelen'
+  phone: 'Telefoon'
+  pois: 'Bezienswaardigheden langs de route'
+  print: 'Afdrukken'
+  readless: 'Minder lezen'
+  readmore: 'Lees verder'
+  recommandation: 'Momenteel op Marche'
+  share: 'Deel het artikel'
+  website: 'Website'
+  where: 'Waar'
+city:
+  character: 'Stad met karakter'
+close:
+  name: 'Sluiten'
+cookie:
+  accept: 'Accepteren'
+  accept_all: 'Alles accepteren'
+  cancel: 'Annuleren'
+  choice: 'Cookievoorkeuren'
+  choice_description: 'Kies of u bepaalde cookies wilt accepteren of weigeren. Ons cookiebeleid kan u helpen bij deze keuze.'
+  customize: 'Aanpassen'
+  description: 'Deze site gebruikt cookies om u een optimale ervaring te bieden.'
+  encapsulated: 'Ingesloten inhoud'
+  encapsulated_description: 'We gebruiken externe diensten (YouTube, OpenStreetMap, etc.) om video''s, kaarten of andere nuttige inhoud weer te geven. Deze diensten gebruiken hun eigen cookies. Het weigeren hiervan blokkeert automatisch de weergave van deze inhoud op de site.'
+  essential_description: 'Essentiële cookies zijn noodzakelijk voor het goed functioneren van deze website.'
+  not_accepted: 'U heeft ons cookiebeleid niet geaccepteerd'
+  reject: 'Weigeren'
+  save_preferences: 'Mijn voorkeuren opslaan'
+  statistics: 'Statistieken'
+  statistics_description: 'We gebruiken Google Analytics om anoniem statistieken te verzamelen over sitebezoeken en interacties.'
+  title: 'Cookie-informatie'
+decouvrez:
+  marche: 'Ontdek'
+different:
+  festivities: 'Kent u onze verschillende festiviteiten?'
+discover: 'Ontdekken'
+discover_them: 'Ontdek ze'
+error:
+  contact_us: 'Neem contact met ons op'
+  explore_pages: 'Of verken deze populaire pagina''s'
+  loading: 'Fout bij het laden van de pagina'
+  looking_for: 'Op zoek naar iets specifieks?'
+  name: 'Fout'
+  not_found_description: 'De pagina die u zoekt bestaat niet of heeft een ander pad genomen in de Famenne.'
+  not_found_title: 'Oeps! U lijkt verdwaald'
+  try_again: 'Het artikel kon niet worden opgehaald. Probeer het later opnieuw.'
+events:
+  all: 'Alle evenementen'
+  notfound: 'Geen evenementen gevonden'
+filter:
+  all: 'Alle'
+  by_category: 'Filteren op categorie'
+homepage:
+  name: 'Startpagina'
+hours:
+  friday: 'Vrijdag'
+  friday_time: '8.00 - 12.00 uur en 13.00 - 15.00 uur'
+  week: 'Van maandag tot en met donderdag'
+  week_time: '8.00 - 12.00 uur en 13.00 - 17.00 uur'
+ideas:
+  home: 'Ideeën voor verblijven'
+inspiration:
+  home: 'Inspiraties'
+local:
+  products: 'Regionale producten'
+menu:
+  categories: 'Categorieën'
+  close: 'Menu sluiten'
+  contact: 'Contact'
+  home: 'Start'
+  language: 'Taalmenu'
+  name: 'Menu'
+  search: 'Zoeken'
+newsletter:
+  confirmed: 'U bent succesvol ingeschreven voor onze nieuwsbrief'
+  data_care: 'Wij gaan zorgvuldig om met uw gegevens.'
+  email_label: 'E-mailadres'
+  email_placeholder: 'Voer uw e-mailadres in'
+  read_charter: 'Lees ons charter.'
+  sending: 'Verzenden…'
+  subscribe: 'Abonneren'
+  title: 'Onze nieuwsbrief'
+offer:
+  address: 'Adres'
+  circuit: 'Circuit'
+  classification: 'Classificatie'
+  close: 'Sluiten'
+  distance: 'Afstand'
+  download: 'Download'
+  email: 'E-mails'
+  equipments: 'Uitrusting & diensten'
+  gpx_details: 'Routegegevens'
+  gpx_download: 'Download het GPX-bestand'
+  labels: 'Labels'
+  next_image: 'Volgende afbeelding'
+  phone: 'Telefoons'
+  prev_image: 'Vorige afbeelding'
+  recommendation: 'Aanbeveling'
+  signage: 'Bewegwijzering'
+  superior: 'Superior'
+  type: 'Type'
+  website: 'Website'
+  welcome: 'Onthaal & toegankelijkheid'
+  when: 'Wanneer?'
+office:
+  name: 'Gemeentelijk VVV-kantoor'
+opens:
+  new:
+    window: 'Opent in een nieuw venster'
+page:
+  notfound: 'Deze pagina bestaat niet meer of een link is verbroken'
+  tourisme: 'Toerisme'
+private:
+  rgpd: 'Juridische kennisgevingen en AVG'
+  right: 'Alle rechten voorbehouden'
+result:
+  name: 'RESULTATEN VOOR'
+search:
+  close: 'Zoekopdracht sluiten'
+  hint: 'Vind artikelen, evenementen en meer.'
+  loading: 'Zoeken...'
+  name: 'Zoeken'
+  no_result: 'Geen resultaten'
+  no_result_for: 'Geen resultaten voor'
+  on_site: 'Zoeken op de site'
+  placeholder: 'Wat zoek je?'
+  powered_by: 'Zoeken door Meilisearch'
+  to_open: 'om te openen'
+  try_another: 'Probeer een andere term.'
+skip:
+  to:
+    content: 'Ga naar inhoud'
+url:
+  back: 'Terug naar'
+  back_home: 'Terug naar start'

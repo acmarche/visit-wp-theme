@@ -1,0 +1,9 @@
+{% if description is defined and description %}
+    <section class="text-body prose prose-base max-w-none">
+        {{ description|raw }}
+    </section>
+{% elseif offer.description %}
+    <section class="text-body prose prose-base max-w-none">
+        {{ offer.description.get(locale)|raw }}
+    </section>
+{% endif %}

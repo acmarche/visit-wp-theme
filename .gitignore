@@ -1,0 +1,66 @@
+# WordPress Core Files
+/wp-admin/
+/wp-includes/
+/wp-content/index.php
+/wp-content/languages
+/wp-content/plugins/index.php
+/wp-content/themes/index.php
+/index.php
+license.txt
+readme.html
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+# WordPress Configuration
+wp-config.php
+.htaccess
+# WordPress Uploads & Cache
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/backup-db/
+/wp-content/backups/
+/wp-content/uploads
+/wp-content/blogs.dir
+/wp-content/upgrade/
+# WordPress Plugins (add exceptions for custom plugins)
+/wp-content/plugins/*
+!/wp-content/plugins/your-custom-plugin/
+
+# WordPress Themes (add exceptions for custom themes)
+/wp-content/themes/twenty*/
+
+# Log Files
+*.log
+error_log
+access_log
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.dev
+/.env.local.php
+/.env.*.local
+/.env
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+/data
+.idea/
+*.sql
+/var
+/src

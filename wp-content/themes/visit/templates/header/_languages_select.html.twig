@@ -1,0 +1,48 @@
+<ul class="list-none">
+    <li class="relative" x-data="{ open: false }">
+        <button
+            type="button"
+            class="inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta-dark"
+            aria-haspopup="true"
+            :aria-expanded="open.toString()"
+            aria-label="{{ 'menu.language'|trans }}"
+            @click="open = !open"
+            @keydown.escape.prevent="open = false"
+            @keydown.arrow-down.prevent="open = true; $nextTick(() => $refs.langMenu.querySelector('a').focus())"
+        >
+            {{ locale|upper }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 transition-transform" :class="open && 'rotate-180'">
+                <path fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"/>
+            </svg>
+        </button>
+        <ul
+            x-ref="langMenu"
+            x-show="open"
+            x-transition:enter="transition ease-out duration-150"
+            x-transition:enter-start="opacity-0 translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-1"
+            @click.away="open = false"
+            @keydown.escape.prevent="open = false; $el.parentElement.querySelector('button').focus()"
+            @keydown.arrow-down.prevent="$event.target.closest('li').nextElementSibling?.querySelector('a')?.focus()"
+            @keydown.arrow-up.prevent="$event.target.closest('li').previousElementSibling?.querySelector('a')?.focus() || $el.parentElement.querySelector('button').focus()"
+            @keydown.tab="open = false"
+            class="list-none absolute right-0 top-full mt-1 w-20 bg-white rounded-md shadow-lg ring-1 ring-black/5 py-1 z-50"
+            x-cloak
+        >
+            {% set currentPath = lang_current_path() %}
+            {% for lang in ['fr', 'en', 'nl', 'de'] %}
+                <li>
+                    <a href="/{{ lang }}/{% if currentPath %}{{ currentPath }}/{% endif %}"
+                       class="block px-4 py-2.5 text-sm {{ locale == lang ? 'text-cta-dark font-semibold' : 'text-gray-700' }} hover:bg-gray-100 focus-visible:bg-gray-100 focus-visible:outline-none">
+                        {{ lang|upper }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

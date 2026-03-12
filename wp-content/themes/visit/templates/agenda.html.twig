@@ -1,0 +1,11 @@
+{% include '@Visit/article/_header_article.html.twig' %}
+{% include '@Visit/article/_excerpt.html.twig' %}
+<script id="agenda-events-data" type="application/json">{{ eventsJson|raw }}</script>
+
+<main class="container px-4 mt-2 xl:mt-4 mx-auto mb-8"
+      x-data="agendaFilter()">
+
+    {% include '@Visit/category/_filters.html.twig' with {filterKey: 'urn'} %}
+
+    {% include '@Visit/category/_events.html.twig' %}
+</main>

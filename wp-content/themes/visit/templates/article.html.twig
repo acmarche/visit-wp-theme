@@ -1,0 +1,61 @@
+<section id="content">
+    {% include '@Visit/article/_header_article.html.twig' %}
+    {% include '@Visit/article/_excerpt.html.twig' %}
+
+    <main id="main-content" class="container mx-auto px-4 py-6 xl:py-10">
+        <article>
+
+            {# ── Title & type badge ── #}
+            <header class="mb-6 xl:mb-8">
+                <h1 class="relative inline-block pb-3 font-montserrat text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight text-carto-main text-pretty">
+                    {{ post.post_title }}
+                    <span class="absolute bottom-0 left-0 h-1 w-16 rounded-full bg-cta-light" aria-hidden="true"></span>
+                </h1>
+                {% if post.tags is defined and post.tags|length > 0 %}
+                    <p class="mt-2">
+                        {% for tag in post.tags %}
+                            <span class="inline-flex items-center rounded-full bg-cta-dark/10 px-3 py-1 text-sm font-medium text-cta-dark">
+                                {{ tag.name }}
+                            </span>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </header>
+
+            {# ── Two-column responsive grid ── #}
+            <div class="grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-6 xl:gap-10 items-start">
+
+                {# ── Sidebar: images first on mobile, sticky right column on desktop ── #}
+                <aside class="order-1 xl:order-2">
+                    <div class="xl:sticky xl:top-24 space-y-6">
+                        <div class="hidden xl:block space-y-2">
+                            {% include '@Visit/article/_tags.html.twig' %}
+                            {% include '@Visit/article/_share.html.twig' %}
+                        </div>
+                        <div class="hidden xl:block rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 p-6">
+                            Contact ??
+                        </div>
+                    </div>
+                </aside>
+
+                {# ── Main content: second on mobile, left column on desktop ── #}
+                <div class="min-w-0 order-2 xl:order-1">
+                    <div class="space-y-8">
+                        {% include '@Visit/article/_body.html.twig' %}
+                        {# Share (mobile only — desktop shows in sidebar) #}
+                        <div class="xl:hidden">
+                            {% include '@Visit/article/_tags.html.twig' %}
+                            {% include '@Visit/article/_share.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {# ── See also: full width ── #}
+            {% include '@Visit/article/_see_also.html.twig' %}
+
+        </article>
+    </main>
+</section>
+
+{% include '@Visit/footer/_wave.html.twig' %}

@@ -1,0 +1,29 @@
+<section class="min-h-screen">
+    <div class="flex flex-row items-center text-red-600 p-4 m-4">
+        <div class="p-10 m-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+            <h3 class="font-bold">{{ 'error.loading'|trans }}</h3>
+            <p>{{ 'error.try_again'|trans }}</p>
+            <pre class="mt-4 p-2 bg-red-50 rounded text-sm">{{ message }}</pre>
+
+            {% if WP_DEBUG %}
+                <div class="flex flex-col gap-4">
+                    <div>
+                        File: {{ file }}
+                    </div>
+                    <div>
+                        Line: {{ line }}
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if statusCode is defined %}
+            statusCode:    {{ statusCode }}
+            {% endif %}
+
+            {% if statusText is defined %}
+             statusText:   {{ statusText }}
+            {% endif %}
+        </div>
+    </div>
+</section>

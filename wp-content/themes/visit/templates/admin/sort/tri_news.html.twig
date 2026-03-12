@@ -1,0 +1,55 @@
+<div class="wrap">
+    <div class="icon32" id="icon-edit"><br></div>
+    <h2>Ordre des news ({{ news|length }})</h2>
+
+    <div id="ajax-response"></div>
+
+    <div id="order-post-type">
+        <ul id="sortable">
+            {% for actu in news %}
+                <li class="ui-sortable-handle" id="item_{{ actu.ID }}-{{ actu.blog_id }}" style="cursor: pointer;">
+                    <span class="drag-handle">&#9776;</span>
+                    <span class="news-title">{{ actu.post_title }}</span>
+                    <span class="news-blog">{{ actu.blog }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="clear"></div>
+    </div>
+
+    <p class="submit">
+        <a href="#" id="save-order" class="button-primary">Sauvegarder</a>
+    </p>
+
+    <script type="text/javascript">
+        jQuery( document )
+            .ready( function() {
+                jQuery( '#sortable' )
+                    .sortable( {
+                        'tolerance': 'intersect',
+                        'cursor': 'pointer',
+                        'items': 'li',
+                        'placeholder': 'placeholder',
+                        'nested': 'ul'
+                    } );
+
+                jQuery( '#sortable' )
+                    .disableSelection();
+                jQuery( '#save-order' )
+                    .bind( 'click', function() {
+                        jQuery.post( ajaxurl, {
+                            action: 'update-custom-type-order',
+                            order: jQuery( '#sortable' )
+                                .sortable( 'serialize' )
+                        }, function() {
+                            jQuery( '#ajax-response' )
+                                .html( '<div class="message updated fade"><p>L\'ordre des articles a bien été sauvegardé</p></div>' );
+                            jQuery( '#ajax-response div' )
+                                .delay( 3000 )
+                                .hide( 'slow' );
+                        } );
+                    } );
+            } );
+    </script>
+
+</div>

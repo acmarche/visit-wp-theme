@@ -1,0 +1,26 @@
+<tr>
+    <td>
+        <span>{{ root.name }}</span>
+    </td>
+    <td></td>
+    <td>
+        <a href="{{ urlAdmin }}{{ root.urn }}" target="_pivot">
+            {{ root.urn }}
+        </a>
+    </td>
+    <td></td>
+</tr>
+{% for child in root.children %}
+    <tr>
+        <td></td>
+        <td>
+            <span>{{ child.name }}</span>
+        </td>
+        <td>
+            <a href="{{ urlAdmin ~ child.urn|url_encode }}" target="_pivot">
+                {{ child.urn }}
+            </a>
+        </td>
+        <td></td>
+    </tr>
+{% endfor %}

@@ -1,0 +1,16 @@
+{# ── Signage ── #}
+{% if offer.signage %}
+    <div class="mb-6">
+        <div class="flex items-center gap-2 rounded-lg bg-gray-50 px-4 py-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-5 h-5 text-cta-dark shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"/>
+            </svg>
+            <div>
+                <span class="text-sm font-medium text-cta-dark">{{ 'offer.signage'|trans|default('Balisage') }}</span>
+                <span class="ml-2 text-sm text-caractere">{{ offer.signage.getValueLabelByLang(locale) }}</span>
+            </div>
+        </div>
+    </div>
+{% endif %}

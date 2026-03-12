@@ -1,0 +1,36 @@
+{% if filters|length > 1 %}
+    {% set filterKey = filterKey|default('id') %}
+    <nav aria-label="{{ 'filter.by_category'|trans }}" class="my-8 px-4 sm:px-6 lg:px-8">
+        <ul role="list" class="flex flex-wrap justify-center gap-2">
+            <li>
+                <a href="{{ parentCategoryUrl }}"
+                   :aria-current="activeFilter === null ? 'true' : 'false'"
+                   @click.prevent="showAll()"
+                   class="inline-flex items-center px-4 py-2 rounded-full text-sm font-montserrat font-medium
+                          border border-cta-dark transition-all duration-300 cursor-pointer
+                          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta-dark"
+                   :class="activeFilter === null
+                       ? 'bg-cta-dark text-white shadow-md'
+                       : 'bg-white text-cta-dark hover:bg-cta-dark hover:text-white hover:shadow-md'">
+                    {{ 'filter.all'|trans }}
+                </a>
+            </li>
+            {% for item in filters %}
+                {% set value = attribute(item, filterKey) %}
+                <li>
+                    <a href="{{ item.url }}"
+                       :aria-current="activeFilter === '{{ value }}' ? 'true' : 'false'"
+                       @click.prevent="filterByCategory('{{ value }}')"
+                       class="inline-flex items-center px-4 py-2 rounded-full text-sm font-montserrat font-medium
+                              border border-cta-dark transition-all duration-300 cursor-pointer
+                              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta-dark"
+                       :class="activeFilter === '{{ value }}'
+                           ? 'bg-cta-dark text-white shadow-md'
+                           : 'bg-white text-cta-dark hover:bg-cta-dark hover:text-white hover:shadow-md'">
+                        {{ item.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}

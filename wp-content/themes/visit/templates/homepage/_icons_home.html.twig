@@ -1,0 +1,30 @@
+<nav aria-label="{{ 'menu.categories'|trans|default('Categories') }}"
+     class="mx-auto max-w-4xl px-4 sm:px-6">
+    <ul class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 lg:gap-10">
+        {% for icon in icons %}
+            <li>
+                <a href="{{ icon.url }}"
+                   class="group flex flex-col items-center justify-center
+                          w-24 h-24 sm:w-28 sm:h-28
+                          rounded-2xl
+                          bg-white/10 backdrop-blur-sm
+                          border border-white/20
+                          {{ icon.colorHover }}
+                          hover:border-transparent
+                          hover:shadow-lg hover:shadow-black/20
+                          transition-all duration-300 ease-out
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
+                    <img src="{{ template_uri() }}/assets/tartine/{{ icon.imageWhite }}"
+                         alt=""
+                         aria-hidden="true"
+                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain
+                                motion-safe:group-hover:scale-110
+                                transition-transform duration-300"/>
+                    <span class="text-xs sm:text-sm font-medium text-white whitespace-nowrap">
+                        {{ icon.name }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

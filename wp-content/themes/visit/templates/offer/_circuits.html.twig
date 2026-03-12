@@ -1,0 +1,28 @@
+{# ── Circuit / Distance ── #}
+{% if offer.circuitType or offer.distance %}
+    <div class="mb-6">
+        <h3 class="font-montserrat-semi-bold text-lg text-caractere mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-5 h-5 text-cta-dark">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/>
+            </svg>
+            {{ 'offer.circuit'|trans|default('Parcours') }}
+        </h3>
+
+        <div class="flex flex-wrap gap-4">
+            {% if offer.circuitType %}
+                <div class="flex items-center gap-2 rounded-lg bg-gray-50 px-4 py-2">
+                    <span class="text-sm font-medium text-cta-dark">{{ 'offer.type'|trans }}</span>
+                    <span class="text-sm text-caractere">{{ offer.circuitType }}</span>
+                </div>
+            {% endif %}
+            {% if offer.distance %}
+                <div class="flex items-center gap-2 rounded-lg bg-gray-50 px-4 py-2">
+                    <span class="text-sm font-medium text-cta-dark">{{ 'offer.distance'|trans }}</span>
+                    <span class="text-sm text-caractere">{{ offer.distance }} km</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

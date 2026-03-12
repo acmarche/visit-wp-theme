@@ -1,0 +1,227 @@
+<div x-data="searchModal()" x-show="isSearchModalOpen" x-cloak>
+    {# Backdrop #}
+    <div x-show="isSearchModalOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="closeSearchModal()"
+         class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
+    </div>
+
+    {# Modal Content #}
+    <div class="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[10vh] sm:pt-[15vh] pointer-events-none">
+        <div @click.stop
+             x-show="isSearchModalOpen"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-4 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+             x-transition:leave-end="opacity-0 -translate-y-4 scale-95"
+             class="pointer-events-auto bg-white rounded-2xl shadow-2xl ring-1 ring-black/5 w-full max-w-2xl flex flex-col"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modal-headline">
+
+            {# Search input header #}
+            <header class="flex items-center gap-3 px-5 py-4 border-b border-gray-200">
+                <svg class="h-5 w-5 text-cta-dark shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                     aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <label for="search-input" class="sr-only">{{ 'search.on_site'|trans }}</label>
+                <input x-model="searchQuery"
+                       @input="handleSearchInput()"
+                       id="search-input"
+                       type="search"
+                       name="search"
+                       autocomplete="off"
+                       placeholder="{{ 'search.on_site'|trans }}..."
+                       x-ref="searchInput"
+                       class="block w-full bg-transparent py-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none font-montserrat"/>
+                <div class="flex items-center gap-2 shrink-0">
+                    <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-300 rounded">ESC</kbd>
+                    <button @click="closeSearchModal()"
+                            type="button"
+                            class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cta-dark"
+                            aria-label="{{ 'search.close'|trans }}">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            {# Results body #}
+            <div class="overflow-y-auto max-h-[60vh]" aria-live="polite" aria-atomic="false">
+                {# Loading #}
+                <div x-show="isLoading" class="flex flex-col items-center justify-center py-14 gap-3" role="status">
+                    <svg class="animate-spin h-7 w-7 text-cta-dark" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24" aria-hidden="true">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-500">{{ 'search.loading'|trans }}</span>
+                </div>
+
+                {# Error #}
+                <div x-show="error && !isLoading" class="flex flex-col items-center py-14 gap-2" role="alert">
+                    <svg class="h-10 w-10 text-cta-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                    </svg>
+                    <p class="font-semibold text-gray-900">{{ 'error.name'|trans }}</p>
+                    <p class="text-sm text-gray-500" x-text="error"></p>
+                </div>
+
+                {# Results list #}
+                <ul x-show="results.length > 0 && !isLoading && !error" class="py-2" role="list">
+                    <template x-for="result in results" :key="result.id">
+                        <li>
+                            <a :href="result.link"
+                               @click="closeSearchModal()"
+                               class="group flex items-center gap-4 px-5 py-3 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-cta-dark/10 shrink-0">
+                                    <svg class="h-4 w-4 text-cta-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-carto-main group-hover:text-cta-dark transition-colors truncate"
+                                       x-text="result.name"></p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <p class="text-sm text-gray-500 truncate" x-show="result.source !== 'local'"
+                                           x-text="result.source"></p>
+                                        <span class="text-gray-300" x-show="result.source !== 'local' && result.tags.length > 0" aria-hidden="true">&middot;</span>
+                                        <p class="text-sm text-gray-500 truncate" x-show="result.tags.length > 0" x-text="result.tags[0].name"></p>
+                                    </div>
+                                </div>
+                                <svg class="h-4 w-4 text-gray-300 group-hover:text-cta-dark transition-colors shrink-0"
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </li>
+                    </template>
+                </ul>
+
+                {# No results #}
+                <div x-show="searchQuery && results.length === 0 && !isLoading && !error"
+                     class="flex flex-col items-center py-14 gap-2" role="status">
+                    <svg class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <p class="font-semibold text-gray-900">{{ 'search.no_result'|trans }}</p>
+                    <p class="text-sm text-gray-500">{{ 'search.no_result_for'|trans }} &laquo;&thinsp;<span class="font-medium text-gray-700" x-text="searchQuery"></span>&thinsp;&raquo;.
+                        {{ 'search.try_another'|trans }}</p>
+                </div>
+
+                {# Initial state #}
+                <div x-show="!searchQuery && !isLoading" class="flex flex-col items-center py-14 gap-2">
+                    <svg class="h-10 w-10 text-cta-dark/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <p class="font-semibold text-gray-900" id="modal-headline">{{ 'search.on_site'|trans }}</p>
+                    <p class="text-sm text-gray-500">{{ 'search.hint'|trans }}</p>
+                </div>
+            </div>
+
+            {# Footer #}
+            <footer class="flex items-center justify-between px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
+                <div class="flex items-center gap-3">
+                    <span class="hidden sm:inline-flex items-center gap-1">
+                        <kbd class="px-1.5 py-0.5 font-semibold bg-gray-100 border border-gray-300 rounded text-gray-500">Ctrl</kbd>
+                        <kbd class="px-1.5 py-0.5 font-semibold bg-gray-100 border border-gray-300 rounded text-gray-500">K</kbd>
+                        <span class="ml-1">{{ 'search.to_open'|trans }}</span>
+                    </span>
+                </div>
+                <span>{{ 'search.powered_by'|trans }}</span>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script>
+    function searchModal() {
+        return {
+            debounceTimer: null,
+            debounceDelay: 500,
+
+            init() {
+                // Listen for custom event to open modal
+                window.addEventListener('open-search-modal', () => {
+                    this.openModal();
+                });
+
+                // Watch for modal open and set focus
+                this.$watch('isSearchModalOpen', value => {
+                    if (value) {
+                        this.$nextTick(() => {
+                            this.$refs.searchInput?.focus();
+                        });
+                    }
+                });
+            },
+
+            handleSearchInput() {
+                // Clear previous timer
+                if (this.debounceTimer) {
+                    clearTimeout(this.debounceTimer);
+                }
+
+                // Clear results if query is too short
+                if (!this.searchQuery || this.searchQuery.length < 2) {
+                    this.results = [];
+                    this.error = '';
+                    return;
+                }
+
+                // Set new timer
+                this.debounceTimer = setTimeout(() => {
+                    this.performSearch(this.searchQuery);
+                }, this.debounceDelay);
+            },
+
+            async performSearch(query) {
+                if (!query || query.length < 2) {
+                    this.results = [];
+                    return;
+                }
+
+                this.isLoading = true;
+                this.error = '';
+
+                try {
+                    // Make API call
+                    const response = await fetch(`https://www.marche.be/api/search.php?s=${encodeURIComponent(query)}`);
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    this.results = Array.isArray(data) ? data : data.data || [];
+
+                } catch (err) {
+                    this.error = 'Failed to fetch search results';
+                    this.results = [];
+                    console.error('Search error:', err);
+                } finally {
+                    this.isLoading = false;
+                }
+            },
+        };
+    }
+</script>

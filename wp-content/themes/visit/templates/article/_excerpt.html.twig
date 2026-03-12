@@ -1,0 +1,13 @@
+{% if excerpt is defined and excerpt != '' %}
+    <div class="bg-party w-full mb-2">
+        <div class="relative flex flex-col p-4 xl:flex-row flex-wrap z-10 xl:h-36 items-center xl:justify-center mx-auto">
+            <span class="text-lg xl:text-xl text-caractere font-montserrat-semi-bold [&_a]:underline [&_a]:text-primary [&_a]:hover:text-primary/80">
+                {{ excerpt|raw }}
+            </span>
+            {% if icon %}
+                <img src="{{ template_uri() }}/assets/tartine/{{ icon }}" alt=""
+                     class="h-40 xl:absolute xl:top-0 xl:bottom-0 xl:right-12 xl:h-52">
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

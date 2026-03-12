@@ -1,0 +1,18 @@
+{% for specInfo in offer.specsDetailed %}
+    <h3>Definition <i>{{ specInfo.urnDefinition.labelByLanguage('fr') }}</i></h3>
+    <ul class="">
+        <li><strong>urn:</strong> {{ specInfo.urnDefinition.urn }}</li>
+        <li><strong>type:</strong> {{ specInfo.urnDefinition.type }}</li>
+    </ul>
+    <h3>Data</h3>
+    <p>{{ specInfo.specData.value }}</p>
+
+    <ul class="">
+        <li><strong>urn:</strong> {{ specInfo.specData.urn }}</li>
+        <li><strong>urnCat:</strong> {{ specInfo.specData.urnCat }}</li>
+        <li><strong>urnSubCat:</strong> {{ specInfo.specData.urnSubCat }}</li>
+        <li><strong>type:</strong> {{ specInfo.specData.type }}</li>
+    </ul>
+    <br/>
+    <hr/>
+{% endfor %}

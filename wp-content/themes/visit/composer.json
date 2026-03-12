@@ -1,0 +1,20 @@
+{
+  "name": "visit/themewp",
+  "type": "wordpress-theme",
+  "description": "Theme visit site",
+  "keywords": [
+    "WordPress",
+    "Themes"
+  ],
+  "version": "1.0",
+  "homepage": "https://epn.marche.be",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Contributors"
+    }
+  ],
+  "require": {
+    "php": ">=8.5"
+  }
+}

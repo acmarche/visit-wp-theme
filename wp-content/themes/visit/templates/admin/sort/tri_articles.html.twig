@@ -1,0 +1,55 @@
+<div class="wrap">
+    <div class="icon32" id="icon-edit"><br></div>
+    <h2>Tri des articles pour la catégorie <i>{{ category.name }}</i></h2>
+
+    <div id="ajax-response"></div>
+
+    <div id="order-post-type">
+        <ul id="sortable">
+            {% for post in posts %}
+                <li class="ui-sortable-handle" id="item_{{ post.ID }}"><span>{{ post.post_title }}</span></li>
+            {% endfor %}
+        </ul>
+
+        <div class="clear"></div>
+    </div>
+
+    <p class="submit">
+        <a href="#" id="save-order" class="button button-primary">
+            Sauvegarder
+        </a>
+    </p>
+
+    <script type="text/javascript">
+        jQuery( document )
+            .ready( function() {
+                jQuery( '#sortable' )
+                    .sortable( {
+                        'tolerance': 'intersect',
+                        'cursor': 'pointer',
+                        'items': 'li',
+                        'placeholder': 'placeholder',
+                        'nested': 'ul'
+                    } );
+
+                jQuery( '#sortable' )
+                    .disableSelection();
+                jQuery( '#save-order' )
+                    .bind( 'click', function() {
+                        jQuery.post( ajaxurl, {
+                            action: 'acupdate-sort',
+                            order: jQuery( '#sortable' )
+                                .sortable( 'serialize' ),
+                            cat_id: {{ category.cat_ID }}
+                        }, function() {
+                            jQuery( '#ajax-response' )
+                                .html( '<div class="message updated fade"><p>L\' ordre a bien été enregistré</p></div>' );
+                            jQuery( '#ajax-response div' )
+                                .delay( 3000 )
+                                .hide( 'slow' );
+                        } );
+                    } );
+            } );
+    </script>
+
+</div>

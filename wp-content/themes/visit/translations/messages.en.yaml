@@ -1,0 +1,145 @@
+agenda:
+  name: 'Agenda'
+  moreevents: 'More events'
+all:
+  experiences: 'All inspirations'
+article:
+  address: 'Address'
+  contact: 'Contact'
+  copy_link: 'Copy link'
+  email: 'E-mail address'
+  notfound: 'No articles'
+  phone: 'Phone'
+  pois: 'Points of interest along the route'
+  print: 'Print'
+  readless: 'Read less'
+  readmore: 'Read more'
+  recommandation: 'Currently on Marche'
+  share: 'Share the article'
+  website: 'Website'
+  where: 'Where'
+city:
+  character: 'City of character'
+close:
+  name: 'Close'
+cookie:
+  accept: 'Accept'
+  accept_all: 'Accept all'
+  cancel: 'Cancel'
+  choice: 'Cookie preferences'
+  choice_description: 'Choose to accept or decline certain cookies. Our cookie policy can help you make this choice.'
+  customize: 'Customize'
+  description: 'This site uses cookies to provide you with an optimal experience.'
+  encapsulated: 'Embedded content'
+  encapsulated_description: 'We use external services (YouTube, OpenStreetMap, etc.) to display videos, maps, or other useful content. These services use their own cookies. Declining these will automatically block the display of this content on the site.'
+  essential_description: 'Essential cookies are necessary for the proper functioning of this website.'
+  not_accepted: 'You have not accepted our cookie policy'
+  reject: 'Decline'
+  save_preferences: 'Save my preferences'
+  statistics: 'Statistics'
+  statistics_description: 'We use Google Analytics to anonymously collect statistics on site visits and interactions.'
+  title: 'Cookie information'
+decouvrez:
+  marche: 'Discover'
+different:
+  festivities: 'Do you know our different festivities?'
+discover: 'Discover'
+discover_them: 'Discover them'
+error:
+  contact_us: 'Contact us'
+  explore_pages: 'Or explore these popular pages'
+  loading: 'Error loading the page'
+  looking_for: 'Looking for something specific?'
+  name: 'Error'
+  not_found_description: 'The page you are looking for does not exist or has taken another path in the Famenne.'
+  not_found_title: 'Oops! You seem lost'
+  try_again: 'We couldn''t fetch the article. Please try again later.'
+events:
+  all: 'All events'
+  notfound: 'Events not found'
+filter:
+  all: 'All'
+  by_category: 'Filter by category'
+homepage:
+  name: 'Home page'
+hours:
+  friday: 'Friday'
+  friday_time: '8 am to 12 pm and 1 pm to 3 pm'
+  week: 'From Monday to Thursday'
+  week_time: '8 am to 12 pm and 1 pm to 5 pm'
+ideas:
+  home: 'Ideas for stays'
+inspiration:
+  home: 'Inspirations'
+local:
+  products: 'Local products'
+menu:
+  categories: 'Categories'
+  close: 'Close menu'
+  contact: 'Contact'
+  home: 'Home'
+  language: 'Language menu'
+  name: 'Menu'
+  search: 'Search'
+newsletter:
+  confirmed: 'You have been successfully subscribed to our newsletter'
+  data_care: 'We take care of your data.'
+  email_label: 'Email address'
+  email_placeholder: 'Enter your email address'
+  read_charter: 'Read our charter.'
+  sending: 'Sending…'
+  subscribe: 'Subscribe'
+  title: 'Newsletter'
+offer:
+  address: 'Address'
+  circuit: 'Circuit'
+  classification: 'Classification'
+  close: 'Close'
+  distance: 'Distance'
+  download: 'Download'
+  email: 'Emails'
+  equipments: 'Equipment & services'
+  gpx_details: 'Route details'
+  gpx_download: 'Download the GPX file'
+  labels: 'Labels'
+  next_image: 'Next image'
+  phone: 'Phones'
+  prev_image: 'Previous image'
+  recommendation: 'Recommendation'
+  signage: 'Signage'
+  superior: 'Superior'
+  type: 'Type'
+  website: 'Website'
+  welcome: 'Welcome & accessibility'
+  when: 'When?'
+office:
+  name: 'Municipal Tourist Office'
+opens:
+  new:
+    window: 'Opens in a new window'
+page:
+  notfound: 'This page no longer exists or a link is broken'
+  tourisme: 'Tourism'
+private:
+  rgpd: 'Legal notices and GDPR'
+  right: 'All rights reserved'
+result:
+  name: 'RESULTS FOR'
+search:
+  close: 'Close search'
+  hint: 'Find articles, events and more.'
+  loading: 'Searching...'
+  name: 'Search'
+  no_result: 'No results'
+  no_result_for: 'No results for'
+  on_site: 'Search the site'
+  placeholder: 'What are you looking for?'
+  powered_by: 'Search by Meilisearch'
+  to_open: 'to open'
+  try_another: 'Try another term.'
+skip:
+  to:
+    content: 'Skip to content'
+url:
+  back: 'Back to'
+  back_home: 'Back to home'

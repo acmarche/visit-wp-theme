@@ -1,0 +1,19 @@
+<div class="notice notice-error inline" style="margin: 15px 0;">
+    <p>Les offres doivent être encodées sur les catégories enfants</p>
+</div>
+
+<div class="notice notice-info inline" style="margin: 15px 0;">
+    <p>Cliquez sur une des catégories ci-dessous pour encoder les offres</p>
+</div>
+
+<ul style="margin: 15px 0; padding: 0; list-style: none;">
+    {% for child in children %}
+        <li style="margin-bottom: 8px;">
+            <a href="/wp-admin/admin.php?page=category_offers&catID={{ child.id }}"
+               class="button button-secondary"
+               style="text-decoration: none;">
+                {{ child.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

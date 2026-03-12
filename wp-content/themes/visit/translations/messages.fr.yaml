@@ -1,0 +1,145 @@
+agenda:
+  name: 'Agenda'
+  moreevents: 'Charger plus d''évènements'
+all:
+  experiences: 'Toutes les inspirations'
+article:
+  address: 'Adresse'
+  contact: 'Contact'
+  copy_link: 'Copier le lien'
+  email: 'Adresse e-mail'
+  notfound: 'Aucun article'
+  phone: 'Téléphone'
+  pois: 'Points d''intérêts sur le parcours'
+  print: 'Imprimer'
+  readless: 'Réduire'
+  readmore: 'Lire plus'
+  recommandation: 'En ce moment sur Marche'
+  share: 'Partagez l''article via'
+  website: 'Site web'
+  where: 'Où'
+city:
+  character: 'Ville de caractère'
+close:
+  name: 'Fermer'
+cookie:
+  accept: 'Accepter'
+  accept_all: 'Tout accepter'
+  cancel: 'Annuler'
+  choice: 'Choix des cookies'
+  choice_description: 'Choisissez d''accepter ou de refuser certains cookies. Notre politique en matière de cookies peut vous aider à faire ce choix.'
+  customize: 'Personnaliser'
+  description: 'Ce site utilise des cookies pour vous fournir une expérience optimale.'
+  encapsulated: 'Contenu encapsulé'
+  encapsulated_description: 'Nous utilisons des services externes (YouTube, OpenStreetMap, etc.) pour afficher des vidéos, des plans, ou tout autre type de contenu utile. Ces services utilisent leurs propres cookies. Refuser ceux-ci bloqueront automatiquement l''affichage de ces contenus dans le site.'
+  essential_description: 'Les cookies essentiels sont nécessaires au bon fonctionnement de ce site internet.'
+  not_accepted: 'Vous n''avez pas accepté notre politique de cookie'
+  reject: 'Refuser'
+  save_preferences: 'Enregistrer mes préférences'
+  statistics: 'Statistiques'
+  statistics_description: 'Nous utilisons Google Analytics pour collecter, de façon anonyme, des statistiques de fréquentation et d''interactions avec le site.'
+  title: 'Informations sur nos cookies'
+decouvrez:
+  marche: 'Découvrez'
+different:
+  festivities: 'Connaissez-vous nos différentes festivités ?'
+discover: 'Découvrez'
+discover_them: 'Découvrez-les'
+error:
+  contact_us: 'Contactez-nous'
+  explore_pages: 'Ou explorez ces pages populaires'
+  loading: 'Erreur lors du chargement de la page'
+  looking_for: 'Vous cherchez quelque chose de précis ?'
+  name: 'Erreur'
+  not_found_description: 'La page que vous recherchez n''existe pas ou a pris un autre chemin dans la Famenne.'
+  not_found_title: 'Oups ! Vous semblez perdu'
+  try_again: 'Impossible de récupérer l''article. Veuillez réessayer plus tard.'
+events:
+  all: 'Tous les évènements'
+  notfound: 'Aucun évènements trouvés'
+filter:
+  all: 'Tout'
+  by_category: 'Filtres par catégorie'
+homepage:
+  name: 'Page d''accueil'
+hours:
+  friday: 'Vendredi'
+  friday_time: 'de 8h à 12h et de 13h à 15h'
+  week: 'Du lundi au jeudi'
+  week_time: 'de 8h à 12h et de 13h à 17h'
+ideas:
+  home: 'Idées de séjours'
+inspiration:
+  home: 'Inspirations'
+local:
+  products: 'Produits locaux'
+menu:
+  categories: 'Catégories'
+  close: 'Fermer le menu'
+  contact: 'Contact'
+  home: 'Accueil'
+  language: 'Choix de la langue'
+  name: 'Menu'
+  search: 'Rechercher'
+newsletter:
+  confirmed: 'Vous êtes bien inscrit à notre lettre d''informations'
+  data_care: 'Nous prenons soin de vos données.'
+  email_label: 'Adresse email'
+  email_placeholder: 'Entrez votre adresse mail'
+  read_charter: 'Lisez notre charte.'
+  sending: 'Envoi…'
+  subscribe: 'Je m''abonne'
+  title: 'Notre lettre d''informations'
+offer:
+  address: 'Adresse'
+  circuit: 'Circuit'
+  classification: 'Classification'
+  close: 'Fermer'
+  distance: 'Distance'
+  download: 'Télécharger'
+  email: 'Emails'
+  equipments: 'Equipements & services'
+  gpx_details: 'Détails du parcours'
+  gpx_download: 'Télécharger le gpx'
+  labels: 'Labels'
+  next_image: 'Image suivante'
+  phone: 'Téléphones'
+  prev_image: 'Image précédente'
+  recommendation: 'Recommendation'
+  signage: 'Balisage'
+  superior: 'Supérieur'
+  type: 'Type'
+  website: 'Website'
+  welcome: 'Accueil & accessibilité'
+  when: 'Quand ?'
+office:
+  name: 'Office Communal du Tourisme'
+opens:
+  new:
+    window: 'Ouvre une nouvelle fenêtre'
+page:
+  notfound: 'Cette page n''existe plus ou un lien est brisé'
+  tourisme: 'Tourisme'
+private:
+  rgpd: 'Mentions légales et RGPD'
+  right: 'Tous droits réservés'
+result:
+  name: 'RÉSULTATS POUR'
+search:
+  close: 'Fermer la recherche'
+  hint: 'Trouvez des articles, événements et plus encore.'
+  loading: 'Recherche en cours...'
+  name: 'Rechercher'
+  no_result: 'Aucun résultat'
+  no_result_for: 'Aucun résultat pour'
+  on_site: 'Rechercher sur le site'
+  placeholder: 'Que cherchez-vous ?'
+  powered_by: 'Recherche par Meilisearch'
+  to_open: 'pour ouvrir'
+  try_another: 'Essayez un autre terme.'
+skip:
+  to:
+    content: 'Aller au contenu'
+url:
+  back: 'Retour à'
+  back_home: 'Retour à l''accueil'

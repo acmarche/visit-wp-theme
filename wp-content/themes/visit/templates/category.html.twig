@@ -1,0 +1,23 @@
+{% include '@Visit/article/_header_article.html.twig' %}
+{% include '@Visit/article/_excerpt.html.twig' %}
+<script id="category-offers-data" type="application/json">{{ offersJson|raw }}</script>
+<section class="container mx-auto px-4 py-6 xl:py-10"
+         x-data="categoryFilter()">
+    <header class="mb-6 xl:mb-8">
+        <h1 class="relative inline-block pb-3 font-montserrat text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight text-carto-main text-pretty">
+            {{ name|raw }}
+            <span class="absolute bottom-0 left-0 h-1 w-16 rounded-full bg-cta-light" aria-hidden="true"></span>
+        </h1>
+        {% if excerpt %}
+            <p class="mt-2">
+                <span class=" items-center  bg-cta-dark/10 px-3 py-1  font-medium text-cta-dark">
+                  {{ excerpt|raw }}
+                </span>
+            </p>
+        {% endif %}
+    </header>
+    <main id="main-content">
+        {% include '@Visit/category/_filters.html.twig' %}
+        {% include '@Visit/category/_items.html.twig' %}
+    </main>
+</section>

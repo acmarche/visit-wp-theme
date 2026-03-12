@@ -1,0 +1,71 @@
+<section id="content">
+    {% include '@Visit/article/_header_article.html.twig' %}
+    {% include '@Visit/article/_excerpt.html.twig' %}
+
+    <main id="main-content" class="container mx-auto px-4 py-6 xl:py-10">
+        <article>
+
+            {# ── Title & type badge ── #}
+            <header class="mb-6 xl:mb-8">
+                <h1 class="relative inline-block pb-3 font-montserrat text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight text-carto-main text-pretty">
+                    {{ 'search'|trans }}
+                    <span class="absolute bottom-0 left-0 h-1 w-16 rounded-full bg-cta-light" aria-hidden="true"></span>
+                </h1>
+                <p class="mt-2">
+                    <span
+                        class="inline-flex items-center rounded-full bg-cta-dark/10 px-3 py-1 text-sm font-medium text-cta-dark">
+                       LABEL ??
+                    </span>
+                </p>
+            </header>
+
+            {# ── Two-column responsive grid ── #}
+            <div class="grid grid-cols-1 gap-6 xl:gap-10 items-start">
+                <form action="/{{ locale }}/" method="GET" role="search">
+                    <label for="hero-search" class="sr-only">{{ 'search.on_site'|trans }}</label>
+                    <div class="relative">
+                        <!-- Search Icon (decorative) -->
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                             aria-hidden="true">
+                            <i class="fas fa-search text-gray-500"></i>
+                        </div>
+                        <!-- Search Input -->
+                        <input v-model="searchQuery"
+                               id="hero-search"
+                               name="s"
+                               type="search"
+                               placeholder="{{ 'search.placeholder'|trans }}"
+                               class="w-full py-3 pl-12 pr-16 md:pr-32 text-gray-900 bg-white rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-cta-dark focus:ring-opacity-75 transition-shadow"
+                        >
+
+                        <!-- Submit Button -->
+                        <button
+                            type="button"
+                            @click="performSearch(searchQuery)"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 md:px-6 bg-cta-brown text-white font-semibold rounded-r-full hover:bg-cta-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cta-dark transition-colors"
+                        >
+                            <!-- Mobile: Icon only -->
+                            <span class="md:hidden"><i class="fas fa-search text-white"></i></span>
+                            <!-- Desktop: Text only -->
+                            <span class="hidden md:inline">{{ 'search.name'|trans }}</span>
+                        </button>
+                    </div>
+                </form>
+                {% if hits|length > 0 %}
+                    <ul class="divide-y divide-gray-200">
+                        {% for result in hits %}
+                            {% include '@Visit/search/_inline_document.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{{ 'search.no_result'|trans }}</p>
+                {% endif %}
+
+            </div>
+
+
+        </article>
+    </main>
+</section>
+
+{% include '@Visit/footer/_wave.html.twig' %}
