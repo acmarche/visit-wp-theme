@@ -6,7 +6,7 @@ function agendaFilter() {
         activeFilter: null,
         filterByCategory(urn) {
             this.activeFilter = urn;
-            this.events = this.allEvents.filter(event => event.tags.includes(urn));
+            this.events = this.allEvents.filter(event => event.tags.some(tag => tag.value === urn));
         },
         showAll() {
             this.events = this.allEvents;

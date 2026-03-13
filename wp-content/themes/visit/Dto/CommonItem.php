@@ -76,6 +76,8 @@ class CommonItem
         $item->url = RouterPivot::getOfferUrl($offer->codeCgt);
         $item->content = $offer->getDescription();
 
+        $item->tags = self::populateTagsForOffer($offer);
+
         if ($offer->typeOffre->idTypeOffre === TypeOffreEnum::EVENT->value) {
             $item->dates = array_map(fn($d) => $d->startDate?->format('Y-m-d'), $offer->dates);
             $item->nextDateParts = $offer->getNextDateParts();
@@ -83,8 +85,6 @@ class CommonItem
 
             return $item;
         }
-
-        $item->tags = self::populateTagsForOffer($offer);
 
         return $item;
     }
