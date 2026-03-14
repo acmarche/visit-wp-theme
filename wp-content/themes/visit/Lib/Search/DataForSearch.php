@@ -93,7 +93,7 @@ class DataForSearch
             }
             foreach ($offers as $offer) {
                 $content .= ' '.$offer->name;
-                $content .= ' '.$offer->type;
+                $content .= ' '.$offer->type->value;
                 $content .= ' '.$offer->excerpt;
             }
 
