@@ -9,7 +9,7 @@
         </svg>
         <address class="not-italic text-sm text-caractere leading-relaxed">
             <span class="block font-montserrat-semi-bold text-cta-dark">{{ 'offer.address'|trans|default('Adresse') }}</span>
-            <span class="block">{{ offer.adresse1.rue }}</span>
+            <span class="block">{{ offer.adresse1.rue }} {{ offer.adresse1.numero }}</span>
             <span class="block">{{ offer.adresse1.cp }} {{ offer.adresse1.localite[0].value }}</span>
         </address>
     </div>
