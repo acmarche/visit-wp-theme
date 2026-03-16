@@ -12,7 +12,7 @@ use WP_Term;
 
 class WpRepository
 {
-    public const PIVOT_REFOFFERS = 'pivot_ref_offers';
+    public const string PIVOT_REFOFFERS = 'pivot_ref_offers';
 
     public static function findCategoryIdByCodeCgt(string $codeCgt): int
     {
@@ -88,19 +88,6 @@ class WpRepository
         $allCodesCgt = [];
         $seenIds = [];
 
-        foreach ($categoryIds as $categoryId) {
-            foreach ($this->findArticlesByCategory($categoryId) as $post) {
-                $item = CommonItem::createFromPost($post);
-                if (!isset($seenIds[$item->id])) {
-                    $seenIds[$item->id] = true;
-                    $items[] = $item;
-                }
-            }
-
-            $codesCgt = WpRepository::getMetaPivotCodesCgtOffers($categoryId);
-            array_push($allCodesCgt, ...$codesCgt);
-        }
-
         $allCodesCgt = array_unique($allCodesCgt);
 
         if ($allCodesCgt !== []) {
@@ -113,6 +100,19 @@ class WpRepository
                     $items[] = CommonItem::createFromOffer($offer);
                 }
             }
+        }
+
+        foreach ($categoryIds as $categoryId) {
+            foreach ($this->findArticlesByCategory($categoryId) as $post) {
+                $item = CommonItem::createFromPost($post);
+                if (!isset($seenIds[$item->id])) {
+                    $seenIds[$item->id] = true;
+                    $items[] = $item;
+                }
+            }
+
+            $codesCgt = WpRepository::getMetaPivotCodesCgtOffers($categoryId);
+            array_push($allCodesCgt, ...$codesCgt);
         }
 
         usort($items, function (CommonItem $a, CommonItem $b) {
