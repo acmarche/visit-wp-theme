@@ -26,7 +26,7 @@ class AdminBar
                 ]
             );
         }
-        if (is_category()) {
+        if (is_category() && !$codeCgt) {
             $cat_ID = get_queried_object_id();
             $wp_admin_bar->add_menu(
                 [
@@ -36,6 +36,7 @@ class AdminBar
                 ]
             );
             $sortLink = SortLink::linkSortArticles($cat_ID);
+            $sortLink = false;
             if ($sortLink) {
                 $wp_admin_bar->add_menu(
                     [
