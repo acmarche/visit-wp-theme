@@ -14,8 +14,8 @@ enum CommonItemTypeEnum: string
     public function sortOrder(): int
     {
         return match ($this) {
-            self::POST => 0,
-            self::OFFER => 1,
+            self::OFFER => 0,
+            self::POST => 1,
             self::CATEGORY => 2,
             self::MENU_ITEM => 3,
         };
