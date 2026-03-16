@@ -1,0 +1,145 @@
+agenda:
+  name: 'Agenda'
+  moreevents: 'Weitere Veranstaltungen'
+all:
+  experiences: 'Alle Inspirationen'
+article:
+  address: 'Adresse'
+  contact: 'Kontakt'
+  copy_link: 'Link kopieren'
+  email: 'E-Mail-Adresse'
+  notfound: 'Keine Artikel'
+  phone: 'Telefon'
+  pois: 'Sehenswürdigkeiten entlang der Strecke'
+  print: 'Drucken'
+  readless: 'Weniger lesen'
+  readmore: 'Mehr lesen'
+  recommandation: 'Aktuell in Marche'
+  share: 'Artikel teilen'
+  website: 'Webseite'
+  where: 'Wo'
+city:
+  character: 'Stadt mit Charakter'
+close:
+  name: 'Schließen'
+cookie:
+  accept: 'Akzeptieren'
+  accept_all: 'Alle akzeptieren'
+  cancel: 'Abbrechen'
+  choice: 'Cookie-Einstellungen'
+  choice_description: 'Wählen Sie, ob Sie bestimmte Cookies akzeptieren oder ablehnen möchten. Unsere Cookie-Richtlinie kann Ihnen bei dieser Entscheidung helfen.'
+  customize: 'Anpassen'
+  description: 'Diese Website verwendet Cookies, um Ihnen ein optimales Erlebnis zu bieten.'
+  encapsulated: 'Eingebettete Inhalte'
+  encapsulated_description: 'Wir verwenden externe Dienste (YouTube, OpenStreetMap usw.), um Videos, Karten oder andere nützliche Inhalte anzuzeigen. Diese Dienste verwenden eigene Cookies. Wenn Sie diese ablehnen, wird die Anzeige dieser Inhalte auf der Website automatisch blockiert.'
+  essential_description: 'Wesentliche Cookies sind für das ordnungsgemäße Funktionieren dieser Website erforderlich.'
+  not_accepted: 'Sie haben unsere Cookie-Richtlinie nicht akzeptiert'
+  reject: 'Ablehnen'
+  save_preferences: 'Meine Einstellungen speichern'
+  statistics: 'Statistiken'
+  statistics_description: 'Wir verwenden Google Analytics, um anonym Statistiken über Websitebesuche und Interaktionen zu sammeln.'
+  title: 'Cookie-Informationen'
+decouvrez:
+  marche: 'Entdecken'
+different:
+  festivities: 'Kennen Sie unsere verschiedenen Festlichkeiten?'
+discover: 'Entdecken'
+discover_them: 'Entdecken Sie sie'
+error:
+  contact_us: 'Kontaktieren Sie uns'
+  explore_pages: 'Oder entdecken Sie diese beliebten Seiten'
+  loading: 'Fehler beim Laden der Seite'
+  looking_for: 'Suchen Sie etwas Bestimmtes?'
+  name: 'Fehler'
+  not_found_description: 'Die Seite, die Sie suchen, existiert nicht oder hat einen anderen Weg in der Famenne eingeschlagen.'
+  not_found_title: 'Hoppla! Sie scheinen sich verirrt zu haben'
+  try_again: 'Der Artikel konnte nicht abgerufen werden. Bitte versuchen Sie es später erneut.'
+events:
+  all: 'Alle Veranstaltungen'
+  notfound: 'Keine Veranstaltungen gefunden'
+filter:
+  all: 'Alle'
+  by_category: 'Nach Kategorie filtern'
+homepage:
+  name: 'Startseite'
+hours:
+  friday: 'Freitag'
+  friday_time: '8 bis 12 Uhr und 13 bis 15 Uhr'
+  week: 'Montag bis Donnerstag'
+  week_time: '8 bis 12 Uhr und 13 bis 17 Uhr'
+ideas:
+  home: 'Ideen für Aufenthalte'
+inspiration:
+  home: 'Inspirationen'
+local:
+  products: 'Lokale Produkte'
+menu:
+  categories: 'Kategorien'
+  close: 'Menü schließen'
+  contact: 'Kontakt'
+  home: 'Startseite'
+  language: 'Sprachmenü'
+  name: 'Menü'
+  search: 'Suche'
+newsletter:
+  confirmed: 'Sie haben sich erfolgreich für unseren Newsletter angemeldet'
+  data_care: 'Wir gehen sorgsam mit Ihren Daten um.'
+  email_label: 'E-Mail-Adresse'
+  email_placeholder: 'Geben Sie Ihre E-Mail-Adresse ein'
+  read_charter: 'Lesen Sie unsere Charta.'
+  sending: 'Wird gesendet…'
+  subscribe: 'Abonnieren'
+  title: 'Newsletter'
+offer:
+  address: 'Adresse'
+  circuit: 'Rundweg'
+  classification: 'Klassifizierung'
+  close: 'Schließen'
+  distance: 'Entfernung'
+  download: 'Herunterladen'
+  email: 'E-Mails'
+  equipments: 'Ausstattung & Dienstleistungen'
+  gpx_details: 'Routendetails'
+  gpx_download: 'GPX-Datei herunterladen'
+  labels: 'Labels'
+  next_image: 'Nächstes Bild'
+  phone: 'Telefone'
+  prev_image: 'Vorheriges Bild'
+  recommendation: 'Empfehlung'
+  signage: 'Beschilderung'
+  superior: 'Superior'
+  type: 'Typ'
+  website: 'Webseite'
+  welcome: 'Empfang & Barrierefreiheit'
+  when: 'Wann?'
+office:
+  name: 'Städtisches Tourismusbüro'
+opens:
+  new:
+    window: 'Öffnet in einem neuen Fenster'
+page:
+  notfound: 'Diese Seite existiert nicht mehr oder ein Link ist fehlerhaft'
+  tourisme: 'Tourismus'
+private:
+  rgpd: 'Rechtliche Hinweise und DSGVO'
+  right: 'Alle Rechte vorbehalten'
+result:
+  name: 'ERGEBNISSE FÜR'
+search:
+  close: 'Suche schließen'
+  hint: 'Finden Sie Artikel, Veranstaltungen und mehr.'
+  loading: 'Suche läuft...'
+  name: 'Suche'
+  no_result: 'Keine Ergebnisse'
+  no_result_for: 'Keine Ergebnisse für'
+  on_site: 'Website durchsuchen'
+  placeholder: 'Wonach suchen Sie?'
+  powered_by: 'Suche mit Meilisearch'
+  to_open: 'zum Öffnen'
+  try_another: 'Versuchen Sie einen anderen Begriff.'
+skip:
+  to:
+    content: 'Zum Inhalt springen'
+url:
+  back: 'Zurück zu'
+  back_home: 'Zurück zur Startseite'
