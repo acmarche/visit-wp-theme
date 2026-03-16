@@ -6,7 +6,7 @@ get_header();
 
 ?>
     <div class="container">
-        hello index
+        hello page
     </div>
     <?php
 get_footer();
