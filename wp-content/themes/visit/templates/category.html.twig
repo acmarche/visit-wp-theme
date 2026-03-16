@@ -8,13 +8,6 @@
             {{ name|raw }}
             <span class="absolute bottom-0 left-0 h-1 w-16 rounded-full bg-cta-light" aria-hidden="true"></span>
         </h1>
-        {% if excerpt %}
-            <p class="mt-2">
-                <span class=" items-center  bg-cta-dark/10 px-3 py-1  font-medium text-cta-dark">
-                  {{ excerpt|raw }}
-                </span>
-            </p>
-        {% endif %}
     </header>
     <main id="main-content">
         {% include '@Visit/category/_filters.html.twig' %}
