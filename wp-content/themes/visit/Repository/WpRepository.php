@@ -88,6 +88,11 @@ class WpRepository
         $allCodesCgt = [];
         $seenIds = [];
 
+        foreach ($categoryIds as $categoryId) {
+            $codesCgt = WpRepository::getMetaPivotCodesCgtOffers($categoryId);
+            array_push($allCodesCgt, ...$codesCgt);
+        }
+
         $allCodesCgt = array_unique($allCodesCgt);
 
         if ($allCodesCgt !== []) {
@@ -110,9 +115,6 @@ class WpRepository
                     $items[] = $item;
                 }
             }
-
-            $codesCgt = WpRepository::getMetaPivotCodesCgtOffers($categoryId);
-            array_push($allCodesCgt, ...$codesCgt);
         }
 
         usort($items, function (CommonItem $a, CommonItem $b) {
