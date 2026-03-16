@@ -3910,34 +3910,14 @@
       line-height: var(--tw-leading, var(--text-6xl--line-height));
     }
   }
-  .xl\:absolute {
-    @media (width >= 80rem) {
-      position: absolute;
-    }
-  }
   .xl\:sticky {
     @media (width >= 80rem) {
       position: sticky;
     }
   }
-  .xl\:top-0 {
-    @media (width >= 80rem) {
-      top: calc(var(--spacing) * 0);
-    }
-  }
   .xl\:top-24 {
     @media (width >= 80rem) {
       top: calc(var(--spacing) * 24);
-    }
-  }
-  .xl\:right-12 {
-    @media (width >= 80rem) {
-      right: calc(var(--spacing) * 12);
-    }
-  }
-  .xl\:bottom-0 {
-    @media (width >= 80rem) {
-      bottom: calc(var(--spacing) * 0);
     }
   }
   .xl\:order-1 {
@@ -3975,11 +3955,6 @@
       height: calc(var(--spacing) * 36);
     }
   }
-  .xl\:h-52 {
-    @media (width >= 80rem) {
-      height: calc(var(--spacing) * 52);
-    }
-  }
   .xl\:w-56 {
     @media (width >= 80rem) {
       width: calc(var(--spacing) * 56);
@@ -4008,16 +3983,6 @@
   .xl\:grid-cols-\[8rem_1fr\] {
     @media (width >= 80rem) {
       grid-template-columns: 8rem 1fr;
-    }
-  }
-  .xl\:flex-row {
-    @media (width >= 80rem) {
-      flex-direction: row;
-    }
-  }
-  .xl\:justify-center {
-    @media (width >= 80rem) {
-      justify-content: center;
     }
   }
   .xl\:gap-4 {
