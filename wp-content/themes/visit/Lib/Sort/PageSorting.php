@@ -9,6 +9,9 @@ class PageSorting
 {
     public function __construct()
     {
+        //to fix deprecated notice
+        global $title;
+        $title = 'Tri des articles';
         add_action('admin_menu', [$this, 'registerPages']);
         add_action('wp_ajax_visit_sort_save', [$this, 'handleSaveOrder']);
     }
@@ -27,9 +30,6 @@ class PageSorting
 
     public function renderPage(): void
     {
-        global $title;
-        $title = 'Tri des articles';
-
         $catId = (int)($_GET['catId'] ?? 0);
         if ($catId < 1) {
             Twig::renderPage('@Visit/admin/error.html.twig', [
