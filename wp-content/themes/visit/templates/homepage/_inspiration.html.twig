@@ -22,7 +22,7 @@
     {% for key, item in inspirations %}
         <a href="{{ item.url }}"
            class="group relative block overflow-hidden rounded-2xl
-                  {{ key == 0 ? 'sm:col-span-2 sm:row-span-2 aspect-[4/3] sm:aspect-auto sm:min-h-[400px]' : 'aspect-[4/3]' }}
+                  {{ key == 0 ? 'sm:col-span-2 sm:row-span-2 aspect-4/3 sm:aspect-auto sm:min-h-100' : 'aspect-4/3' }}
                   shadow-md hover:shadow-xl
                   transition-shadow duration-300
                   focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cta-light/50 focus-visible:ring-offset-2">
@@ -37,7 +37,7 @@
             {% endif %}
 
             {# Gradient overlay #}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent
+            <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent
                         group-hover:from-black/80
                         transition-all duration-300"
                  aria-hidden="true"></div>
