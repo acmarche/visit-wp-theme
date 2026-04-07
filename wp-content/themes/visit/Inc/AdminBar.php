@@ -36,7 +36,6 @@ class AdminBar
                 ]
             );
             $sortLink = SortLink::linkSortArticles($cat_ID);
-            $sortLink = false;
             if ($sortLink) {
                 $wp_admin_bar->add_menu(
                     [

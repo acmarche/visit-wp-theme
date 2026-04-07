@@ -6,7 +6,7 @@ use WP_Term;
 
 class CategorySortMetaData
 {
-    public const KEY_SORT = 'visit_category_sort';
+    public const string KEY_SORT = 'visit_category_sort';
 
     public function __construct()
     {
@@ -39,7 +39,7 @@ class CategorySortMetaData
 
     private function editFormFields(WP_Term $term): void
     {
-        $sorting = get_term_meta($term->term_id, self::KEY_SORT, true);
+        $sorting = self::getSortMethod($term->term_id);
         ?>
         <tr class="form-field">
             <th scope="row"><label><?php esc_html_e('Méthode de tri', 'flavor'); ?></label></th>
@@ -74,8 +74,8 @@ class CategorySortMetaData
         }
     }
 
-    public static function getColor(WP_Term $category): string
+    public static function getSortMethod(int $term_id): ?string
     {
-        return get_term_meta($category->term_id, self::KEY_SORT, true) ?: '';
+        return get_term_meta($term_id, self::KEY_SORT, true) ?: null;
     }
 }
