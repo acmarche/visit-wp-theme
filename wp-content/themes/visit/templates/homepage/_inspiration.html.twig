@@ -3,6 +3,9 @@
         class="text-3xl sm:text-4xl font-bold text-caractere">
         {{ 'inspiration.home'|trans }}
     </h2>
+    {% if sortLink %}
+        {{ sortLink|raw }}
+    {% endif %}
     <a href="{{ urlInspiration }}"
        title="{{ 'all.experiences'|trans }}"
        class="group inline-flex items-center gap-2 text-cta-dark font-semibold
