@@ -31,6 +31,7 @@ try {
     $items = [];
 }
 
+dd(count($items));
 if (CategorySortMetaData::getSortMethod($category->term_id) === 'manual') {
     $items = SortRepository::applySortOrder($category->term_id, $items);
 }

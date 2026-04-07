@@ -49,7 +49,7 @@ class PageSorting
         }
 
         $wpRepository = new WpRepository();
-        $items = $wpRepository->findArticlesAndOffersByWpCategory($catId);
+        $items = $wpRepository->findArticlesAndOffersByWpCategory($catId, true);
 
         $sortedItems = SortRepository::applySortOrder($catId, $items);
 
