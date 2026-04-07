@@ -7,7 +7,7 @@ use VisitMarche\ThemeWp\Repository\WpRepository;
 
 class PageSorting
 {
-    static function loadPages(): void
+    static function loadPages(int $wpCategoryId): void
     {
         $position = 61;
         add_menu_page(
@@ -23,36 +23,35 @@ class PageSorting
         );
         add_submenu_page(
             'acmarche_trie',
-            'Trie des news',
-            'Tri des news',
+            'Trie des articles',
+            'Tri des articles',
             'edit_posts',
-            'ac_marche_tri_news',
-            function () {
-                PageSorting::renderPageNews();
+            'ac_marche_tri_articles',
+            function () use ($wpCategoryId) {
+                PageSorting::renderPage($wpCategoryId);
             },
         );
     }
 
     static function pageIndex(): void
     {
-        $urlNews = admin_url('/admin.php?page=ac_marche_tri_news');
         Twig::renderPage(
             '@AcMarche/sort/menu.html.twig',
             [
-                'urlNews' => $urlNews,
+                'url' => admin_url('/admin.php?page=ac_marche_tri_articles')
             ]
         );
     }
 
-    static function renderPageNews(): void
+    static function renderPage(int $wpCategoryId): void
     {
         $wpRepository = new WpRepository();
-        $news = $wpRepository->getNews(30);
+        $articles = $wpRepository->findArticlesAndOffersByWpCategory($wpCategoryId);
 
         Twig::renderPage(
-            '@AcMarche/sort/tri_news.html.twig',
+            '@AcMarche/sort/tri_articles.html.twig',
             [
-                'news' => $news,
+                'articles' => $articles,
             ]
         );
     }

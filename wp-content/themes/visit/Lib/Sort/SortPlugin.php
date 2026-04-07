@@ -30,15 +30,15 @@ class SortPlugin
     }
 
     /**
-     * @param WP_Post[] $news
+     * @param WP_Post[] $items
      *
      * @return  WP_Post[]
      */
-    public static function trieNews(array $news): array
+    public static function sorting(int $wpCategoryId, array $items): array
     {
         // dump($news);
         //obtient table avec id news id blog order
-        $ordre = self::getOrdreNews();
+        $ordre = self::getPostsByOrder($wpCategoryId);
         /*
          * je check si chaque news a un classement
          * si oui set position
@@ -60,20 +60,20 @@ class SortPlugin
                     $post->order = (int)end($needle)->order;
                 }
             },
-            $news
+            $items
         );
         //  dump($news);
-        $news = SortUtil::sortByPosition($news);
+        $news = SortUtil::sortByPosition($items);
 
         //   dump($news);
 
         return $news;
     }
 
-    public static function getOrdreNews(): array
+    public static function getPostsByOrder(int $wpCatagoryId): array
     {
         global $wpdb;
-        $query = "SELECT * FROM `news_order` ORDER BY `order` ";
+        $query = "SELECT * FROM `wp_acposts_order` WHERE `cat_id` = $wpCatagoryId ORDER BY `position` ";
 
         $num_rows = $wpdb->query($query);
 
@@ -89,7 +89,7 @@ class SortPlugin
         return $wpdb->get_results($query);
     }
 
-    static function saveNewsOrder(): void
+    static function saveOrder(): void
     {
         global $wpdb;
         parse_str($_POST['order'], $data);
@@ -100,16 +100,16 @@ class SortPlugin
             $varsUp = array();
             list($nul, $post_id) = explode("_", $clef);
             $blog_id = $tab[0];
-            $vars["id_blog"] = $blog_id;
-            $vars["id_news"] = $post_id;
-            $vars["order"] = $i;
-            $varsUp["order"] = $i;
+            $vars["cat_id"] = $blog_id;
+            $vars["post_id"] = $post_id;
+            $vars["position"] = $i;
+            $varsUp["position"] = $i;
             $i++;
 
-            $where = array('id_blog' => $blog_id, 'id_news' => $post_id);
+            $where = array('cat_id' => $blog_id, 'post_id' => $post_id);
 
             //try update if existe
-            $update = $wpdb->update('news_order', $varsUp, $where);
+            $update = $wpdb->update('wp_acposts_order', $varsUp, $where);
 
             if ($wpdb->last_error) {
                 $error = "Impossible update. Erreur : <br />";
@@ -121,7 +121,7 @@ class SortPlugin
                 /*
                  * check if already in table
                  */
-                $query = "SELECT * FROM `news_order` WHERE `id_news` = %s AND `id_blog` = %s ";
+                $query = "SELECT * FROM `wp_acposts_order` WHERE `post_id` = %s AND `cat_id` = %s ";
 
                 $num_rows = $wpdb->query($wpdb->prepare($query, $post_id, $blog_id));
 
@@ -134,7 +134,7 @@ class SortPlugin
 
                 if ($num_rows == 0) {
 
-                    $wpdb->insert('news_order', $vars, $type);
+                    $wpdb->insert('wp_acposts_order', $vars, $type);
 
                     if ($wpdb->last_error) {
 

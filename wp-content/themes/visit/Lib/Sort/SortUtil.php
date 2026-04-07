@@ -17,11 +17,11 @@ class SortUtil
             $posts,
             function ($postA, $postB) {
                 {
-                    if ($postA->order == $postB->order) {
+                    if ($postA->position == $postB->position) {
                         return 0;
                     }
 
-                    return ($postA->order < $postB->order) ? -1 : 1;
+                    return ($postA->position < $postB->position) ? -1 : 1;
                 }
             }
         );
