@@ -71,10 +71,7 @@ $imgs = [
 $img = array_rand($imgs);
 $bgImg = $imgs[$img];
 
-$sortLink = false;
-if (current_user_can('edit_post', 2)) {
-    $sortLink = SortLink::linkSortArticles(2);
-}
+$sortLink = SortLink::sortUrl(2);
 
 Twig::renderPage(
     '@Visit/homepage.html.twig',

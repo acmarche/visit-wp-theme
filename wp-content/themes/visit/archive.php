@@ -5,8 +5,10 @@ namespace VisitMarche\TheWo;
 use VisitMarche\ThemeWp\Enums\CommonItemTypeEnum;
 use VisitMarche\ThemeWp\Enums\LanguageEnum;
 use VisitMarche\ThemeWp\Inc\CategoryMetaData;
+use VisitMarche\ThemeWp\Inc\CategorySortMetaData;
 use VisitMarche\ThemeWp\Lib\LocaleHelper;
 use VisitMarche\ThemeWp\Lib\OpenAi;
+use VisitMarche\ThemeWp\Lib\Sort\SortRepository;
 use VisitMarche\ThemeWp\Lib\Twig;
 use VisitMarche\ThemeWp\Repository\WpRepository;
 
@@ -27,6 +29,10 @@ try {
     $items = $wpRepository->findArticlesAndOffersByWpCategory($category->term_id, true);
 } catch (\Exception $e) {
     $items = [];
+}
+
+if (CategorySortMetaData::getSortMethod($category->term_id) === 'manual') {
+    $items = SortRepository::applySortOrder($category->term_id, $items);
 }
 
 $locale = LocaleHelper::getSelectedLanguage();

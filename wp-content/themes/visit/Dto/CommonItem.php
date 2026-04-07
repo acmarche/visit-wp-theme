@@ -30,6 +30,7 @@ class CommonItem
      */
     public array $nextDateParts = [];
     public bool $hasMultipleDates = false;
+    public int $sortPosition = PHP_INT_MAX;
 
     public function __construct(
         public string $id,

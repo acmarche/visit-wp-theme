@@ -5,6 +5,7 @@ namespace VisitMarche\ThemeWp;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use VisitMarche\ThemeWp\Inc\AdminBar;
 use VisitMarche\ThemeWp\Inc\AdminPages;
+use VisitMarche\ThemeWp\Lib\Sort\PageSorting;
 use VisitMarche\ThemeWp\Inc\Ajax;
 use VisitMarche\ThemeWp\Inc\ApiRoutes;
 use VisitMarche\ThemeWp\Inc\AssetsLoader;
@@ -75,6 +76,10 @@ new OpenGraph();
  * Admin pages
  */
 new AdminPages();
+/**
+ * Sort articles page
+ */
+new PageSorting();
 /**
  * Add buttons to admin bar
  */

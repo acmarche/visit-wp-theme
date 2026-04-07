@@ -35,13 +35,13 @@ class AdminBar
                     'href' => '/wp-admin/admin.php?page=category_offers&catID='.$cat_ID,
                 ]
             );
-            $sortLink = SortLink::linkSortArticles($cat_ID);
-            if ($sortLink) {
+            $sortUrl = SortLink::sortUrl($cat_ID);
+            if ($sortUrl) {
                 $wp_admin_bar->add_menu(
                     [
                         'id' => 'pivot_sort',
                         'title' => '<span class="ab-icon dashicons dashicons-sort"></span> Trier les articles',
-                        'href' => $sortLink,
+                        'href' => $sortUrl,
                     ]
                 );
             }

@@ -7,52 +7,84 @@ use VisitMarche\ThemeWp\Repository\WpRepository;
 
 class PageSorting
 {
-    static function loadPages(int $wpCategoryId): void
+    public function __construct()
     {
-        $position = 61;
-        add_menu_page(
-            'Tri des articles',
-            'Tri',
-            'edit_posts',
-            'acmarche_trie',
-            function () {
-                PageSorting::pageIndex();
-            },
-            'dashicons-sort',
-            $position
-        );
+        add_action('admin_menu', [$this, 'registerPages']);
+        add_action('wp_ajax_visit_sort_save', [$this, 'handleSaveOrder']);
+    }
+
+    public function registerPages(): void
+    {
         add_submenu_page(
-            'acmarche_trie',
-            'Trie des articles',
+            '',
+            'Tri des articles',
             'Tri des articles',
             'edit_posts',
-            'ac_marche_tri_articles',
-            function () use ($wpCategoryId) {
-                PageSorting::renderPage($wpCategoryId);
-            },
+            'visit_sort_articles',
+            [$this, 'renderPage'],
         );
     }
 
-    static function pageIndex(): void
+    public function renderPage(): void
     {
-        Twig::renderPage(
-            '@AcMarche/sort/menu.html.twig',
-            [
-                'url' => admin_url('/admin.php?page=ac_marche_tri_articles')
-            ]
-        );
-    }
+        global $title;
+        $title = 'Tri des articles';
 
-    static function renderPage(int $wpCategoryId): void
-    {
+        $catId = (int)($_GET['catId'] ?? 0);
+        if ($catId < 1) {
+            Twig::renderPage('@Visit/admin/error.html.twig', [
+                'message' => 'Vous devez passer par une catégorie pour accéder à cette page',
+            ]);
+
+            return;
+        }
+
+        $category = get_category($catId);
+        if (!$category || is_wp_error($category)) {
+            Twig::renderPage('@Visit/admin/error.html.twig', [
+                'message' => 'Catégorie introuvable',
+            ]);
+
+            return;
+        }
+
         $wpRepository = new WpRepository();
-        $articles = $wpRepository->findArticlesAndOffersByWpCategory($wpCategoryId);
+        $items = $wpRepository->findArticlesAndOffersByWpCategory($catId);
+
+        $sortedItems = SortRepository::applySortOrder($catId, $items);
+
+        wp_enqueue_script('jquery-ui-sortable');
 
         Twig::renderPage(
-            '@AcMarche/sort/tri_articles.html.twig',
+            '@Visit/admin/sort/tri_articles.html.twig',
             [
-                'articles' => $articles,
+                'category' => $category,
+                'items' => $sortedItems,
+                'categoryUrl' => get_category_link($category),
+                'nonce' => wp_create_nonce('visit_sort_nonce'),
             ]
         );
+    }
+
+    public function handleSaveOrder(): void
+    {
+        if (!check_ajax_referer('visit_sort_nonce', 'nonce', false)) {
+            wp_send_json_error('Invalid nonce', 403);
+        }
+
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error('Insufficient permissions', 403);
+        }
+
+        $catId = (int)($_POST['cat_id'] ?? 0);
+        $order = $_POST['order'] ?? [];
+
+        if ($catId < 1 || !is_array($order)) {
+            wp_send_json_error('Invalid data', 400);
+        }
+
+        SortRepository::saveOrder($catId, $order);
+
+        wp_send_json_success();
     }
 }
