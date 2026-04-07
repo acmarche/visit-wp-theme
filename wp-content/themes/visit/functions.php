@@ -9,6 +9,7 @@ use VisitMarche\ThemeWp\Inc\Ajax;
 use VisitMarche\ThemeWp\Inc\ApiRoutes;
 use VisitMarche\ThemeWp\Inc\AssetsLoader;
 use VisitMarche\ThemeWp\Inc\CategoryMetaData;
+use VisitMarche\ThemeWp\Inc\CategorySortMetaData;
 use VisitMarche\ThemeWp\Inc\LanguageRouter;
 use VisitMarche\ThemeWp\Inc\OpenGraph;
 use VisitMarche\ThemeWp\Inc\RouterPivot;
@@ -36,6 +37,7 @@ new SetupTheme();
  * Category metas: image, video, icon, color
  */
 new CategoryMetaData();
+new CategorySortMetaData();
 /**
  * Chargement css, js
  */
