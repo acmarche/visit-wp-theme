@@ -1382,9 +1382,6 @@
   .aspect-4\/3 {
     aspect-ratio: 4/3;
   }
-  .aspect-\[4\/3\] {
-    aspect-ratio: 4/3;
-  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
@@ -2137,10 +2134,6 @@
     --tw-gradient-position: to right in oklab;
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
-  .bg-gradient-to-t {
-    --tw-gradient-position: to top in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
-  }
   .from-black\/20 {
     --tw-gradient-from: color-mix(in srgb, #000 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2348,6 +2341,9 @@
   }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
+  }
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
   }
   .py-10 {
     padding-block: calc(var(--spacing) * 10);
@@ -3598,9 +3594,9 @@
       height: calc(var(--spacing) * 32);
     }
   }
-  .sm\:min-h-\[400px\] {
+  .sm\:min-h-100 {
     @media (width >= 40rem) {
-      min-height: 400px;
+      min-height: calc(var(--spacing) * 100);
     }
   }
   .sm\:w-10 {
