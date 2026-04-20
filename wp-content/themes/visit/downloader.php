@@ -9,7 +9,7 @@ declare(strict_types=1);
  * and serves it with Content-Disposition: attachment to force download.
  */
 
-require_once dirname(__DIR__, 2).'/wp-load.php';
+require_once dirname(__DIR__, 3).'/wp-load.php';
 
 use AcMarche\PivotAi\Enums\ContentLevel;
 use VisitMarche\ThemeWp\Repository\PivotRepository;
