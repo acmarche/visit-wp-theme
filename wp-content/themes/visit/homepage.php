@@ -8,6 +8,7 @@ use VisitMarche\ThemeWp\Inc\Theme;
 use VisitMarche\ThemeWp\Lib\LocaleHelper;
 use VisitMarche\ThemeWp\Lib\OpenAi;
 use VisitMarche\ThemeWp\Lib\Sort\SortLink;
+use VisitMarche\ThemeWp\Lib\Sort\SortRepository;
 use VisitMarche\ThemeWp\Lib\Twig;
 use VisitMarche\ThemeWp\Repository\MenuRepository;
 use VisitMarche\ThemeWp\Repository\PivotRepository;
@@ -41,6 +42,7 @@ $urlInspiration = get_category_link($inspirationCat);
 $events = $pivotRepository->loadEvents(skip: true);
 $events = array_slice($events, 0, 4);
 
+$inspirations = SortRepository::applySortOrder($inspirationCat->term_id, $inspirations);
 $inspirations = array_slice($inspirations, 0, 4);
 $icons = $menu->getIcons($locale);
 
