@@ -2544,11 +2544,11 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
-  .text-\[0\.6rem\] {
-    font-size: 0.6rem;
-  }
   .text-\[0\.7rem\] {
     font-size: 0.7rem;
+  }
+  .text-\[0\.65rem\] {
+    font-size: 0.65rem;
   }
   .text-\[0\.72rem\] {
     font-size: 0.72rem;
@@ -2631,6 +2631,10 @@
   }
   .break-all {
     word-break: break-all;
+  }
+  .hyphens-none {
+    -webkit-hyphens: none;
+    hyphens: none;
   }
   .whitespace-nowrap {
     white-space: nowrap;

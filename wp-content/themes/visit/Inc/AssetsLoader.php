@@ -31,7 +31,7 @@ class AssetsLoader
             'visitmarche-css',
             get_template_directory_uri().'/assets/css/visit.css',
             null,
-            '1.4'
+            '1.5'
         );
 
         wp_enqueue_style(
