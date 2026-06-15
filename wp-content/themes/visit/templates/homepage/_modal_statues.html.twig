@@ -48,7 +48,7 @@
         {# Badge — straddles the column boundary so it overlaps the statue edge #}
         <div class="hidden sm:flex absolute z-20 flex-col items-center justify-center text-center
                     w-28 h-28 rounded-full text-white p-3 shadow-xl ring-4 ring-[#f4efe6]
-                    top-32 right-6 lg:top-1/2 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 lg:-translate-y-1/2"
+                    top-24 right-6 lg:top-1/3 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 lg:-translate-y-1/2"
              style="background-color:#1d2b3a;">
             <svg class="w-5 h-5 mb-1" style="color:#9bbf6f;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path
@@ -142,10 +142,14 @@
 
                 {# Partner logos (white logos on a dark chip so they read on the cream card) #}
                 <div class="mt-auto pt-8">
-                    <div class="inline-flex items-center px-5 py-3 rounded-2xl" style="background-color:#1d2b3a;">
+                    <div class="inline-flex items-center gap-5 px-5 py-3 rounded-2xl" style="background-color:#1d2b3a;">
                         <img src="{{ template_uri() }}/assets/images/marche_logo.png"
                              alt="Marche-en-Famenne"
                              class="h-9 sm:h-10 w-auto object-contain"/>
+                        <span class="h-8 w-px bg-white/25" aria-hidden="true"></span>
+                        <img src="{{ template_uri() }}/assets/images/VISITWalloniaBlanc.png"
+                             alt="Visit Wallonia"
+                             class="h-7 sm:h-8 w-auto object-contain"/>
                     </div>
                 </div>
             </div>
