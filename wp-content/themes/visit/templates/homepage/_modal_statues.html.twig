@@ -60,15 +60,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2">
 
             {# ===== LEFT: content ===== #}
-            <div class="p-6 sm:p-8 lg:p-10 flex flex-col">
+            <div class="p-6 sm:p-8 lg:p-6 flex flex-col">
                 <div class="flex items-center gap-4 sm:gap-5">
                     <img src="{{ template_uri() }}/assets/images/VisitLogoBlack.png"
                          alt="Visit Marche"
                          class="h-14 sm:h-16 w-auto object-contain"/>
                     <span class="h-10 sm:h-12 w-px bg-black/15" aria-hidden="true"></span>
-                    <img src="{{ template_uri() }}/assets/tartine/VISITWallonia.be.svg"
-                         alt="Visit Wallonia"
-                         class="h-10 sm:h-12 w-auto object-contain"/>
                 </div>
 
                 <div class="mt-6">
@@ -143,13 +140,14 @@
                 {# Partner logos (white logos on a dark chip so they read on the cream card) #}
                 <div class="mt-auto pt-8">
                     <div class="inline-flex items-center gap-5 px-5 py-3 rounded-2xl" style="background-color:#1d2b3a;">
-                        <img src="{{ template_uri() }}/assets/images/marche_logo.png"
+                       <a href="https://www.marche.be/"> <img src="{{ template_uri() }}/assets/images/marche_logo.png"
                              alt="Marche-en-Famenne"
-                             class="h-9 sm:h-10 w-auto object-contain"/>
+                             class="h-9 sm:h-10 w-auto object-contain"/></a>
                         <span class="h-8 w-px bg-white/25" aria-hidden="true"></span>
-                        <img src="{{ template_uri() }}/assets/images/VISITWalloniaBlanc.png"
+                        <a href="https://visitwallonia.be/"> <img src="{{ template_uri() }}/assets/images/VISITWalloniaBlanc.png"
                              alt="Visit Wallonia"
                              class="h-7 sm:h-8 w-auto object-contain"/>
+                        </a>
                     </div>
                 </div>
             </div>
