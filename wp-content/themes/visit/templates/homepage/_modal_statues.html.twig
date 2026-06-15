@@ -61,9 +61,15 @@
 
             {# ===== LEFT: content ===== #}
             <div class="p-6 sm:p-8 lg:p-10 flex flex-col">
-                <img src="{{ template_uri() }}/assets/images/VisitLogoBlack.png"
-                     alt="Visit Marche"
-                     class="h-14 sm:h-16 w-auto object-contain"/>
+                <div class="flex items-center gap-4 sm:gap-5">
+                    <img src="{{ template_uri() }}/assets/images/VisitLogoBlack.png"
+                         alt="Visit Marche"
+                         class="h-14 sm:h-16 w-auto object-contain"/>
+                    <span class="h-10 sm:h-12 w-px bg-black/15" aria-hidden="true"></span>
+                    <img src="{{ template_uri() }}/assets/tartine/VISITWallonia.be.svg"
+                         alt="Visit Wallonia"
+                         class="h-10 sm:h-12 w-auto object-contain"/>
+                </div>
 
                 <div class="mt-6">
                     <h2 id="statues-modal-title"
@@ -136,14 +142,10 @@
 
                 {# Partner logos (white logos on a dark chip so they read on the cream card) #}
                 <div class="mt-auto pt-8">
-                    <div class="inline-flex items-center gap-5 px-5 py-3 rounded-2xl" style="background-color:#1d2b3a;">
+                    <div class="inline-flex items-center px-5 py-3 rounded-2xl" style="background-color:#1d2b3a;">
                         <img src="{{ template_uri() }}/assets/images/marche_logo.png"
                              alt="Marche-en-Famenne"
                              class="h-9 sm:h-10 w-auto object-contain"/>
-                        <span class="h-8 w-px bg-white/25" aria-hidden="true"></span>
-                        <img src="{{ template_uri() }}/assets/images/VISITWalloniaBlanc.png"
-                             alt="Visit Wallonia"
-                             class="h-7 sm:h-8 w-auto object-contain"/>
                     </div>
                 </div>
             </div>
