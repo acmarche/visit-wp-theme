@@ -1,0 +1,24 @@
+{
+  "id": "7869de01",
+  "phase": "cycling",
+  "pageUrl": "/",
+  "sourceFile": "wp-content/themes/visit/templates/homepage.html.twig",
+  "expectedVariants": 3,
+  "arrivedVariants": 3,
+  "visibleVariant": 1,
+  "paramValues": {
+    "heading-scale": 1,
+    "layout": "big",
+    "density": "snug"
+  },
+  "pendingEventSeq": null,
+  "pendingEvent": null,
+  "deliveryLease": null,
+  "checkpointRevision": 7,
+  "activeOwner": "6599a226",
+  "sourceMarkers": {},
+  "fallbackMode": null,
+  "annotationArtifacts": [],
+  "diagnostics": [],
+  "updatedAt": "2026-06-15T11:37:12.866Z"
+}
