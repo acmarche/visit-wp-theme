@@ -22,7 +22,9 @@ class AssetsLoader
     {
         wp_enqueue_style(
             'theme-visit-style',
-            get_template_directory_uri().'/style.css'
+            get_template_directory_uri().'/style.css',
+            null,
+            2
         );
 
         wp_enqueue_style(
