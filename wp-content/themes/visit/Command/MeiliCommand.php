@@ -67,19 +67,19 @@ class MeiliCommand extends Command
         if ($update) {
             $this->dataForSearch = new DataForSearch();
 
-            $output->writeln('<info>Indexing posts...</info>');
+         //   $output->writeln('<info>Indexing posts...</info>');
             $this->indexPosts($output);
             $this->freeMemory();
 
-            $output->writeln('<info>Indexing categories...</info>');
+           //   $output->writeln('<info>Indexing categories...</info>');
             $this->indexCategories($output);
             $this->freeMemory();
 
-            $output->writeln('<info>Indexing offers...</info>');
+            //  $output->writeln('<info>Indexing offers...</info>');
             $this->indexOffers($output, $translate);
             $this->freeMemory();
 
-            $output->writeln('<comment>Indexation complete!</comment>');
+          //    $output->writeln('<comment>Indexation complete!</comment>');
 
             return Command::SUCCESS;
         }
@@ -95,7 +95,7 @@ class MeiliCommand extends Command
     {
         $documents = [];
         $posts = $this->dataForSearch->getPosts();
-        $output->writeln(sprintf(' %d posts', count($posts)));
+      //    $output->writeln(sprintf(' %d posts', count($posts)));
         foreach ($posts as $document) {
             $documents[] = $document;
         }
@@ -110,7 +110,7 @@ class MeiliCommand extends Command
         $documents = [];
 
         $categories = $this->dataForSearch->getCategories();
-        $output->writeln(sprintf(' %d categories', count($categories)));
+        //  $output->writeln(sprintf(' %d categories', count($categories)));
         foreach ($categories as $document) {
             $documents[] = $document;
         }
@@ -129,7 +129,7 @@ class MeiliCommand extends Command
         }
 
         $offers = $this->dataForSearch->getOffers(translate: $translate);
-        $output->writeln(sprintf(' %d offers', count($offers)));
+       //   $output->writeln(sprintf(' %d offers', count($offers)));
         foreach ($offers as $document) {
             $documents[] = $document;
         }
