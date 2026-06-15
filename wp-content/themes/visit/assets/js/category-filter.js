@@ -24,7 +24,7 @@ function categoryFilter() {
         loading: false,
         async filterByCategory(categoryId) {
             this.loading = true;
-            this.activeFilter = Number(categoryId);
+            this.activeFilter = categoryId;
             try {
                 const response = await fetch('/wp-json/pivot/category_items/' + categoryId);
                 this.offers = await response.json();
