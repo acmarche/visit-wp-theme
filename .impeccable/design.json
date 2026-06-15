@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-15T00:00:00Z",
+  "title": "Design System: Visit Marche",
+  "extensions": {
+    "colorMeta": {
+      "cta-teal": { "role": "primary", "displayName": "Famenne Teal", "canonical": "#487f89", "tonalRamp": ["#16282c", "#21393f", "#2d4d54", "#3a646d", "#487f89", "#6f9aa3", "#9bbcc2", "#c9dde0"] },
+      "cta-coral": { "role": "primary", "displayName": "Welcome Coral", "canonical": "#fd8383", "tonalRamp": ["#5a1f1f", "#7d2c2c", "#a83e3e", "#d35656", "#fd8383", "#ff9d9d", "#ffbcbc", "#ffe0e0"] },
+      "cta-green": { "role": "secondary", "displayName": "Vivid Green", "canonical": "#16ba99", "tonalRamp": ["#06352b", "#094a3d", "#0c6452", "#108068", "#16ba99", "#3fd3b5", "#7ce2cd", "#bdf2e7"] },
+      "patrimony": { "role": "tertiary", "displayName": "Patrimony Blue", "canonical": "#aab7d8", "tonalRamp": ["#2c3550", "#3d4a6e", "#52628f", "#7385b3", "#aab7d8", "#c2cce3", "#d8deee", "#edf0f7"] },
+      "walk": { "role": "tertiary", "displayName": "Walk Green", "canonical": "#64966f", "tonalRamp": ["#1f2f23", "#2c4332", "#3c5a44", "#4e7659", "#64966f", "#86b08f", "#aecbb4", "#d6e4da"] },
+      "art": { "role": "tertiary", "displayName": "Art Gold", "canonical": "#f5cc73", "tonalRamp": ["#5a4516", "#7d601f", "#a87f2a", "#d3a138", "#f5cc73", "#f8d893", "#fbe7bd", "#fdf4e0"] },
+      "campaign-cream": { "role": "neutral", "displayName": "Stone Cream", "canonical": "#f4efe6", "tonalRamp": ["#4a463c", "#666150", "#878170", "#b3ad9b", "#d6d0c2", "#f4efe6", "#f9f6f0", "#fdfcf9"] },
+      "campaign-navy": { "role": "neutral", "displayName": "Deep Navy", "canonical": "#1d2b3a", "tonalRamp": ["#0c121a", "#131d27", "#1d2b3a", "#2c4055", "#3d5673", "#5a7596", "#8aa0bb", "#c2cedd"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#212529", "tonalRamp": ["#0c0e10", "#16181b", "#212529", "#3a3f45", "#5c636b", "#868d96", "#b6bcc3", "#e4e7ea"] },
+      "border-soft": { "role": "neutral", "displayName": "Soft Border", "canonical": "#dee2e6", "tonalRamp": ["#5a5e62", "#787c81", "#9a9ea3", "#bcc0c4", "#dee2e6", "#e9ebee", "#f3f4f5", "#fafbfb"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Feature and campaign headings; tight tracking, never below -0.04em." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings." },
+      "title": { "displayName": "Title", "purpose": "Card titles and sub-section labels." },
+      "body": { "displayName": "Body", "purpose": "Reading text; 65-75ch measure." },
+      "label": { "displayName": "Label", "purpose": "Category labels and badges; uppercase only for <=4 words." }
+    },
+    "shadows": [
+      { "name": "ambient-card", "value": "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)", "purpose": "Default resting lift for cards and floating UI (shadow-md)." },
+      { "name": "raised-hover", "value": "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)", "purpose": "Hover and emphasized cards, collage, badges (shadow-lg)." },
+      { "name": "overlay", "value": "0 25px 50px -12px rgba(0,0,0,0.25)", "purpose": "True overlays only: the campaign modal (shadow-2xl)." },
+      { "name": "topnav-marker", "value": "0 -3px 0 0 #fd8383 inset", "purpose": "Signature coral underline marker on the top navigation." }
+    ],
+    "motion": [
+      { "name": "transition-colors", "value": "color/background 200ms ease", "purpose": "Default state feedback on links, buttons, chips." },
+      { "name": "modal-enter", "value": "opacity + scale(0.95 -> 1) over 300ms ease-out", "purpose": "Campaign modal entrance; crossfade under prefers-reduced-motion." },
+      { "name": "underline-grow", "value": "background-size 0 -> 100% over 500ms", "purpose": "Animated link underline (underlinePink/underlineGrey utilities)." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action; teal pill that warms to coral on hover.",
+      "html": "<button class=\"ds-btn-primary\">Découvrir la région</button>",
+      "css": ".ds-btn-primary { background:#487f89; color:#fff; font-family:Montserrat,sans-serif; font-weight:600; padding:12px 24px; border:none; border-radius:9999px; cursor:pointer; transition:background .2s ease, transform .2s ease; } .ds-btn-primary:hover { background:#fd8383; transform:translateY(-1px); } .ds-btn-primary:focus-visible { outline:none; box-shadow:0 0 0 2px #fff, 0 0 0 4px #fd8383; }"
+    },
+    {
+      "name": "Category Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Quiet category/metadata tag; translucent teal pill.",
+      "html": "<span class=\"ds-chip\">Patrimoine</span>",
+      "css": ".ds-chip { display:inline-flex; align-items:center; background:rgba(72,127,137,0.1); color:#487f89; font-family:Montserrat,sans-serif; font-size:0.875rem; font-weight:500; padding:4px 12px; border-radius:9999px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "32px circular icon button; grey ground warming to coral.",
+      "html": "<button class=\"ds-icon-btn\" aria-label=\"Fermer\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M6 18L18 6M6 6l12 12\"/></svg></button>",
+      "css": ".ds-icon-btn { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border:none; border-radius:9999px; background:#636061; color:#fff; cursor:pointer; transition:background .2s ease; } .ds-icon-btn:hover { background:#fd8383; } .ds-icon-btn:focus-visible { outline:none; box-shadow:0 0 0 2px #fff, 0 0 0 4px #fd8383; }"
+    },
+    {
+      "name": "Content Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White card on light ground; soft lift, border warms to teal on hover.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Balades en Famenne</h3><p class=\"ds-card-body\">Sentiers, nature et patrimoine au cœur de la Famenne.</p></article>",
+      "css": ".ds-card { background:#fff; border:1px solid #dee2e6; border-radius:8px; padding:16px 24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -2px rgba(0,0,0,0.1); transition:border-color .2s ease, box-shadow .2s ease; } .ds-card:hover { border-color:#487f89; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -4px rgba(0,0,0,0.1); } .ds-card-title { font-family:Montserrat,sans-serif; font-weight:600; font-size:1.125rem; color:#487f89; margin:0 0 8px; } .ds-card-body { font-family:Montserrat,sans-serif; font-size:1rem; line-height:1.6; color:#212529; margin:0; }"
+    },
+    {
+      "name": "Category Icon Link",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Intent-category link: soft-hued icon, bold label, hint text. Used in the campaign modal grid.",
+      "html": "<a class=\"ds-cat\" href=\"#\"><span class=\"ds-cat-icon\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5 7h1a2 2 0 0 0 2-2 1 1 0 0 1 1-1h6a1 1 0 0 1 1 1 2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/></svg></span><span class=\"ds-cat-label\">VISITER</span></a>",
+      "css": ".ds-cat { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:4px; border-radius:12px; text-decoration:none; transition:background .2s ease; } .ds-cat:hover { background:rgba(0,0,0,0.05); } .ds-cat-icon { display:grid; place-items:center; width:40px; height:40px; color:#487f89; transition:transform .2s ease; } .ds-cat:hover .ds-cat-icon { transform:scale(1.1); } .ds-cat-label { font-family:Montserrat,sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:0.04em; color:#3f4d2e; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Warm Welcome",
+    "overview": "Visit Marche is the front door of a real place. The system behaves like a host opening that door: a soft, light ground, real photography of the town and the Famenne countryside, and a small set of warm accents that point the visitor toward their next step. It is unhurried and generous; nothing shouts, and the interface stays out of the way. Warmth here is earned, not decorated: it comes from photography, the regional palette, and human first/second-person copy, never from gratuitous effects. The structure orbits five visitor intents (visiter, manger, dormir, bouger, s'inspirer), each carrying a soft signature hue.",
+    "keyCharacteristics": [
+      "Light, warm ground with a compact set of coral/teal accents",
+      "Real photography as the primary emotional carrier",
+      "Five intent categories, each with a soft signature hue",
+      "Soft, layered depth: gentle shadows and rounded corners",
+      "Calm density; restraint is part of the brand",
+      "Multilingual-resilient layouts (fr/en/nl/de)"
+    ],
+    "rules": [
+      { "name": "The Earned-Warmth Rule", "body": "Warmth comes from photography, the accent pair, and copy, never from effects. No gradient heroes, no decorative glass, no neon.", "section": "colors" },
+      { "name": "The Quiet-Accent Rule", "body": "Coral and teal are accents, not fields. Keep the bright accents to a small share of any screen; let the light ground and imagery carry the surface.", "section": "colors" },
+      { "name": "The Contrast-Floor Rule", "body": "Soft category hues and Basic Grey are decorative tints, not text colors on light grounds. Body text holds >=4.5:1 (WCAG 2.1 AA); darken toward Ink when a tint must carry a label.", "section": "colors" },
+      { "name": "The One-Family Rule", "body": "Montserrat carries everything. Express hierarchy through weight (400/600/700) and size, not a second typeface.", "section": "typography" },
+      { "name": "The Translation-Headroom Rule", "body": "Size and wrap headings so fr/en/nl/de strings never overflow or truncate. Test the longest language, not the shortest.", "section": "typography" },
+      { "name": "The Soft-Lift Rule", "body": "Shadows are diffuse and low-contrast. Pair a soft shadow OR a hairline border, not both as decoration.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do lead with real photography of Marche and the Famenne; let imagery carry the warmth.",
+      "Do keep Famenne Teal (#487f89) as the default action/focus color and Welcome Coral (#fd8383) as the warm accent.",
+      "Do hold body text to >=4.5:1 contrast and large text to >=3:1 (WCAG 2.1 AA); darken soft category tints toward Ink when they carry text.",
+      "Do express type hierarchy with Montserrat weights (400/600/700), not a second font.",
+      "Do keep depth soft: shadow-md at rest, shadow-lg on hover, rounded corners (8px cards, full-pill chips/buttons).",
+      "Do give every surface one clear next step (explore a category, open an offer, plan a stay).",
+      "Do size and wrap headings so fr/en/nl/de translations never overflow."
+    ],
+    "donts": [
+      "Don't ship the generic SaaS/AI-template look: flat repeating card grids, gradient hero blobs, or a tracked uppercase eyebrow above every section.",
+      "Don't drift into a cold corporate/civic tone: bureaucratic gray, joyless form-heavy layouts.",
+      "Don't adopt cluttered OTA/booking-portal density: ad-heavy stacks, pushy cross-sell, competing CTAs.",
+      "Don't go loud or gimmicky: neon, heavy gratuitous animation, stacked pop-ups, carnival energy.",
+      "Don't use gradient text, decorative glassmorphism, or side-stripe (border-left > 1px) accents.",
+      "Don't pair a 1px border with a wide soft drop shadow as decoration on the same element; pick one.",
+      "Don't over-round: cards top out at 16px (rounded-2xl); full-pill is for chips and buttons only.",
+      "Don't let the bright accents (coral, vivid green) flood the surface; they are accents, not fields."
+    ]
+  }
+}
