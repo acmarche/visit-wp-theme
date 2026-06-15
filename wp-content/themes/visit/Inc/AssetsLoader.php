@@ -29,7 +29,9 @@ class AssetsLoader
 
         wp_enqueue_style(
             'visitmarche-css',
-            get_template_directory_uri().'/assets/css/visit.css',null,2
+            get_template_directory_uri().'/assets/css/visit.css',
+            null,
+            '1.2'
         );
 
         wp_enqueue_style(
