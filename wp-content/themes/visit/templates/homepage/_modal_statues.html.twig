@@ -90,7 +90,7 @@
                     <h2 id="statues-modal-title"
                         class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight"
                         style="color:#3f4d2e;">
-                        <a href="/inspirations/statues-en-marche/"
+                        <a href="/inspirations/marche-1900/"
                            class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta-dark focus-visible:ring-offset-2 rounded">
                             Marché 1900 - 15 août,<br>
                             et si vous viviez<br>
@@ -175,39 +175,52 @@
             <div
                 class="relative min-h-[300px] sm:min-h-[380px] lg:min-h-full overflow-hidden rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl"
                 style="background-color:#1d2b3a;">
-                {# Statue (fills the panel like the original artwork) #}
-                <img src="{{ template_uri() }}/assets/images/modal/statue.jpg"
-                     alt="Statue vivante en bronze à Marche-en-Famenne"
-                     class="absolute inset-0 h-full w-full object-cover object-top"/>
-                {# Gradient to blend into the cream card and lift the overlays #}
-                <div
-                    class="absolute inset-0 bg-linear-to-br from-[#1d2b3a]/40 via-transparent to-[#1d2b3a]/70 lg:bg-linear-to-r lg:from-[#f4efe6] lg:via-transparent lg:to-[#1d2b3a]/50"
-                    aria-hidden="true"></div>
 
-                {# Photo collage #}
-                <div class="absolute bottom-4 right-3 sm:bottom-6 sm:right-6 hidden sm:flex items-end gap-2 sm:gap-3">
-                    <img src="{{ template_uri() }}/assets/images/modal/velo.jpg"
-                         alt="Balade à vélo en famille"
-                         class="w-20 h-24 sm:w-28 sm:h-32 object-cover rounded-lg shadow-xl ring-2 ring-white rotate-[-4deg]"/>
-                    <img src="{{ template_uri() }}/assets/images/modal/patrimoine.jpg"
-                         alt="Patrimoine bâti et jardins"
-                         class="w-20 h-28 sm:w-28 sm:h-40 object-cover rounded-lg shadow-xl ring-2 ring-white"/>
-                    <img src="{{ template_uri() }}/assets/images/modal/gourmandise.jpg"
-                         alt="Gastronomie et produits locaux"
-                         class="w-20 h-24 sm:w-28 sm:h-32 object-cover rounded-lg shadow-xl ring-2 ring-white rotate-[4deg]"/>
-                </div>
+                {# Warm glow lifts the framed photo off the deep-navy mat #}
+                <div class="pointer-events-none absolute inset-0"
+                     style="background:radial-gradient(115% 78% at 50% 34%, rgba(245,204,115,0.16), transparent 62%);"
+                     aria-hidden="true"></div>
+                {# Seam: soften the navy into the cream card on desktop #}
+                <div class="pointer-events-none absolute inset-y-0 left-0 hidden w-24 lg:block"
+                     style="background:linear-gradient(to right, #f4efe6, transparent);"
+                     aria-hidden="true"></div>
 
-                {# Location pill #}
-                <div
-                    class="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur text-gray-800 text-xs sm:text-sm font-medium shadow-lg">
-                    <svg class="w-4 h-4 text-cta-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         stroke-width="2" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    Marche au cœur de la Famenne
-                    <span style="color:#64966f;">♥</span>
+                <div class="relative flex h-full flex-col items-center justify-center gap-6 p-6 sm:p-8">
+
+                    {# Framed band photo — the Marché 1900 event named in the title #}
+                    <figure class="relative w-full max-w-md">
+                        <img src="{{ template_uri() }}/assets/images/modal/marche1900.jpg"
+                             alt="Musiciens en concert lors de Marché 1900, le 15 août à Marche-en-Famenne"
+                             width="1200" height="800" loading="lazy" decoding="async"
+                             style="aspect-ratio:3/2;"
+                             class="w-full object-cover rounded-2xl ring-1 ring-white/30 shadow-2xl"/>
+
+                        {# Location caption tucked on the print #}
+                        <figcaption
+                            class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur text-gray-800 text-xs sm:text-sm font-medium shadow-lg">
+                            <svg class="w-4 h-4 text-cta-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                 stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Marche au cœur de la Famenne
+                            <span style="color:#64966f;">♥</span>
+                        </figcaption>
+                    </figure>
+
+                    {# Photo collage — a taste of everything else that awaits #}
+                    <div class="hidden items-end justify-center gap-3 sm:flex">
+                        <img src="{{ template_uri() }}/assets/images/modal/velo.jpg"
+                             alt="Balade à vélo en famille" loading="lazy"
+                             class="w-24 h-28 object-cover rounded-lg shadow-xl ring-2 ring-white rotate-[-4deg]"/>
+                        <img src="{{ template_uri() }}/assets/images/modal/patrimoine.jpg"
+                             alt="Patrimoine bâti et jardins" loading="lazy"
+                             class="w-24 h-32 object-cover rounded-lg shadow-xl ring-2 ring-white"/>
+                        <img src="{{ template_uri() }}/assets/images/modal/gourmandise.jpg"
+                             alt="Gastronomie et produits locaux" loading="lazy"
+                             class="w-24 h-28 object-cover rounded-lg shadow-xl ring-2 ring-white rotate-[4deg]"/>
+                    </div>
                 </div>
             </div>
         </div>
