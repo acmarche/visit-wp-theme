@@ -99,7 +99,8 @@ class Seo
 
     private static function metaPivotOffer(string $codeCgt): void
     {
-        $language = 'fr';
+        $language = LanguageRouter::getCurrentLanguage();
+        $fallback = LanguageRouter::DEFAULT_LANGUAGE;
         $pivotRepository = new PivotRepository();
         try {
             $offer = $pivotRepository->loadOffer($codeCgt);
@@ -112,9 +113,13 @@ class Seo
 
         if (null !== $offer) {
             $base = self::baseTitle('');
-            $label = $offer->typeOffre->getLabelByLang($language);
+            $label = $offer->typeOffre?->getLabelByLang($language)
+                ?: $offer->typeOffre?->getLabelByLang($fallback)
+                ?: '';
             self::$metas['title'] = $offer->nom.' '.$label.' '.$base;
-            $description = wp_strip_all_tags($offer->description?->get('fr'));
+            $description = wp_strip_all_tags(
+                $offer->description?->get($language) ?: $offer->description?->get($fallback) ?: '',
+            );
             if ($description) {
                 self::$metas['description'] = self::cleanString($description);
             }
