@@ -8,8 +8,14 @@ use WP_Post;
 
 class OpenGraph
 {
+    private const OG_LOCALES = [
+        'fr' => 'fr_BE',
+        'nl' => 'nl_BE',
+        'en' => 'en_GB',
+        'de' => 'de_DE',
+    ];
+
     private string $siteName;
-    private string $locale = 'fr_BE';
 
     public function __construct()
     {
@@ -26,7 +32,7 @@ class OpenGraph
         echo '<meta property="og:url" content="'.esc_url($data['url']).'" />'."\n";
         echo '<meta property="og:title" content="'.esc_attr($data['title']).'" />'."\n";
         echo '<meta property="og:site_name" content="'.esc_attr($this->siteName).'" />'."\n";
-        echo '<meta property="og:locale" content="'.esc_attr($this->locale).'" />'."\n";
+        echo '<meta property="og:locale" content="'.esc_attr($this->getLocale()).'" />'."\n";
 
         if (!empty($data['description'])) {
             echo '<meta property="og:description" content="'.esc_attr($data['description']).'" />'."\n";
@@ -137,11 +143,19 @@ class OpenGraph
             $offer = $pivotRepository->loadOffer($codeCgt);
 
             if ($offer) {
-                $data['type'] = 'article';
-                $data['title'] = $offer->nom.' | '.$offer->typeOffre?->getLabelByLang('fr').' | ';
+                $lang = LanguageRouter::getCurrentLanguage();
+                $fallback = LanguageRouter::DEFAULT_LANGUAGE;
 
-                if (!empty($offer->description)) {
-                    $data['description'] = wp_strip_all_tags($offer->description?->get('fr'));
+                $data['type'] = 'article';
+                $data['title'] = implode(' | ', array_filter([
+                    $offer->nom,
+                    $offer->typeOffre?->getLabelByLang($lang) ?: $offer->typeOffre?->getLabelByLang($fallback),
+                    $this->siteName,
+                ]));
+
+                $description = $offer->description?->get($lang) ?: $offer->description?->get($fallback);
+                if ($description) {
+                    $data['description'] = wp_strip_all_tags($description);
                 }
 
                 $image = $offer->getDefaultImage();
@@ -149,12 +163,12 @@ class OpenGraph
                     $data['image'] = $image->url;
                 }
 
-                if (!empty($offer->dateCreation)) {
-                    $data['published_time'] = $offer->dateCreation;
+                if ($offer->dateCreation instanceof \DateTimeInterface) {
+                    $data['published_time'] = $offer->dateCreation->format('c');
                 }
 
-                if (!empty($offer->dateModification)) {
-                    $data['modified_time'] = $offer->dateModification;
+                if ($offer->dateModification instanceof \DateTimeInterface) {
+                    $data['modified_time'] = $offer->dateModification->format('c');
                 }
             }
         } catch (\Exception) {
@@ -176,6 +190,13 @@ class OpenGraph
         }
 
         return $content;
+    }
+
+    private function getLocale(): string
+    {
+        $lang = LanguageRouter::getCurrentLanguage();
+
+        return self::OG_LOCALES[$lang] ?? self::OG_LOCALES[LanguageRouter::DEFAULT_LANGUAGE];
     }
 
     private function getCurrentUrl(): string
