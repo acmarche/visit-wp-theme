@@ -11,6 +11,8 @@ class SetupTheme
         add_action('after_setup_theme', fn() => $this->setup());
         add_action('after_switch_theme', fn() => TranslationRepository::createTable());
         add_action('admin_init', fn() => $this->maybeCreateTranslationTable());
+        // override the version-control detection.
+        add_filter('automatic_updater_disabled', fn() => false);
     }
 
     private function maybeCreateTranslationTable(): void
