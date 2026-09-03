@@ -1,0 +1,414 @@
+ ▐▛███▛█   Claude Code v2.1.259
+▝▜██████▀  Opus 5 · Claude Pro
+  ▝▝ ▝▝    /var/www/visit/wp
+
+
+❯ finish script wp/wp-scan-all.sh                                               
+
+● I'll look at the script and the wp/ directory first.
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The file is a mash-up: a read-only multi-site scanner header/loop, with a
+  hardening script's body (wp-harden.sh) pasted inside it. As it stands it can't
+  run — the loop is never closed, section/log are undefined, it references
+  $WP_PATH instead of $FULL_PATH, there's a stray end, and the malware-indicator
+  scan the counters expect (TOTAL_SUSPECT, TOTAL_UPLOAD_PHP) was never written.
+
+  The two halves want opposite things — the banner promises "no files were
+  modified", the body chowns, chmods, edits wp-config.php, and runs plugin 
+  update --all across 6 sites.
+
+● User answered Claude's questions:
+  ⎿  · The file mixes a read-only scanner with a hardening script. Which should 
+     wp-scan-all.sh become? → Hardening only
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Apache (no nginx), and objectifemploi doesn't exist on this box — the existing
+  skip branch covers it. Writing the finished script:
+
+  Read 1 file (ctrl+o to expand)
+
+● Now a real dry run against the sites:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● One real issue found: the wp-config.php backup lands at 644 (world-readable DB
+  credentials) on a later run's file sweep. Fixing:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Done. wp/wp-scan-all.sh → wp/wp-harden-all.sh, finished as a hardening script.
+
+  What was broken: the for SITE loop was never closed; the body used an
+  undefined $WP_PATH instead of $FULL_PATH; log() and section() were called but
+  never defined; $LOG_FILE was referenced but only $REPORT/$SUMMARY_LOG were
+  set; a stray end sat where done belonged; log "\n-- ..." printed a literal \n;
+  and the "READ-ONLY: no files were modified" banner contradicted everything
+  below it.
+
+  What it does now — per site, skipping anything without a wp-load.php:
+  1. chown -R www-data, dirs 755 / files 644 (.git pruned), wp-config.php 640,
+     execute bit restored on bin/
+  2. xmlrpc block — nginx snippet written once outside the loop, .htaccess
+     <Files> block per site (Require all denied, Apache 2.4 syntax; the original
+     used the 2.2 Order Deny,Allow)
+  3. WP-CLI as www-data: version, core + plugin checksums, plugin/theme lists,
+     admin users, inactive code, then core/plugin/theme updates
+  4. DISALLOW_FILE_EDIT inserted via sed, after a mode-600 backup
+
+  Flags: --dry-run, --yes, --site NAME (repeatable), --no-chown, --no-update,
+  --help. Without --dry-run or --yes it prompts before touching anything. Exits
+  1 if any site had a failed step.
+
+  Verified against throwaway fixtures: dry run mutates nothing, real run
+  produces the expected file contents and modes, second run is idempotent (both
+  the .htaccess block and the wp-config define are detected and skipped). One
+  bug caught in testing — the wp-config backup was left at 644 by the next run's
+  file sweep, exposing DB credentials; backups are now 600 and re-locked on
+  each pass.
+
+  Two things to weigh before running it for real:
+
+  - chown -R www-data on /var/www/visit will take the repo away from your user
+    and break your dev workflow there. Use --no-chown, or drop visit from SITES
+    and harden it separately.
+  - objectifemploi doesn't exist on this machine — it's skipped cleanly, but
+    check whether the name is stale or the site lives elsewhere.
+
+  Start with sudo ./wp/wp-harden-all.sh --dry-run.
+
+✻ Baked for 4m 12s · done 14:55
+
+❯ check my first run wp/wp-harden-all-20260903-150050.log                       
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The dry run worked, but it surfaced something that matters far more than the
+  hardening: 5 of your 6 sites show the same core-integrity failures. Let me
+  look at the actual files before saying more.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● wordpress-logo-manager.php is not on disk now, though WP-CLI reported it at
+  15:00:50. Let me verify the findings independently rather than trust the log.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Two of these need re-running to interpret. Let me reproduce the checksum check
+  directly:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Version reports as 6.9.4 here and verifies cleanly — but the log said 7.1 with
+  mismatches. The difference is that the script runs WP-CLI via sudo -u 
+  www-data. Checking for a config that hijacks the path:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Those version numbers don't match disk. Before I draw conclusions, the one set
+  of files that genuinely exists — esquare's:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both are real JPEGs; upload_log.txt is a 2017 chunked-upload debug log.
+  Nothing malicious. One last check on the marche-wp fatal:
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Found the concrete bug. /var/www/marche-wp/wp-config.php:111 uses a relative
+  include:
+
+  include 'vendor/autoload.php';
+
+  That resolves against the caller's working directory, not wp-config's. The
+  script runs from /var/www/visit, so it loaded visit's autoloader — which has
+  no symfony/dotenv — hence the fatal on every marche-wp WP-CLI call. Now fixing
+  the two script defects the run exposed:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two problems with that patch — sudo VAR=val is refused unless sudoers allows
+  setenv, and E_STRICT is gone in PHP 8. Fixing:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checked. I need to walk back how I opened this turn — I said 5 of 6 sites show
+  core-integrity failures, implying compromise. That reading doesn't survive
+  verification. Nothing in this log is evidence of a compromise.
+
+  The checksum findings are false positives
+
+  - wp-blog-header.php — byte-identical on all five "failing" sites, and its md5
+    (5f425a46…) is an exact match for the official WordPress checksum from
+    api.wordpress.org. It is stock.
+  - wp-admin/images/wordpress-logo-manager.php — does not exist. Not on any of
+    the six sites; wp-admin/images/ contains no PHP at all.
+  - esquare's three extra files — real, but benign: .png and
+    projectThumbnail.jpeg are genuine JPEGs with no PHP tags, and upload_log.txt
+    is a chunked-upload debug log from 2017 (someone's test uploads — an .avi
+    and a Debian ISO).
+  - Re-running wp core verify-checksums on adl directly returns Success.
+
+  Why the section is unreliable
+
+  The versions in the log don't match disk:
+
+  ┌────────────┬──────────┬──────────────────┐
+  │    site    │ log says │ version.php says │
+  ├────────────┼──────────┼──────────────────┤
+  │ adl        │ 7.1      │ 7.1              │
+  ├────────────┼──────────┼──────────────────┤
+  │ esquare    │ 7.1      │ 6.9.4            │
+  ├────────────┼──────────┼──────────────────┤
+  │ esquare-wp │ 7.0.3    │ 7.0              │
+  ├────────────┼──────────┼──────────────────┤
+  │ marche-wp  │ 7.1      │ 6.8.3            │
+  ├────────────┼──────────┼──────────────────┤
+  │ visit      │ 7.1      │ 6.9.4            │
+  └────────────┴──────────┴──────────────────┘
+
+  WP-CLI resolved roughly one version for every site. Verifying a 6.8.3 tree
+  against a 7.1 manifest produces exactly this signature — a couple of
+  genuinely-changed files plus phantom "should not exist" entries.
+  wp-includes/update.php differs from stock on every site and differs between 
+  sites, which fits version skew, not injection.
+
+  I have not proven the mechanism — there's no wp-cli.yml anywhere and no
+  WP_CLI_* env set, and I can't sudo -u www-data here to reproduce the script's
+  exact invocation. You can settle it in one command:
+
+  sudo -u www-data wp --path=/var/www/marche-wp core version
+
+  If that prints 7.1 rather than 6.8.3, the resolution bug is in the sudo -u
+  path and the whole section needs re-running before any of it is trusted.
+
+  One real bug found
+
+  /var/www/marche-wp/wp-config.php:111 uses a relative include:
+
+  include 'vendor/autoload.php';   // resolves against the CALLER's cwd
+
+  Run from /var/www/visit, it loads visit's autoloader — no symfony/dotenv — so
+  every WP-CLI call on marche-wp fataled. It works under the web server only
+  because the cwd happens to line up. Fix is include __DIR__ . 
+  '/vendor/autoload.php';, but that's a different site's file so I've left it
+  alone — say the word.
+
+  Script fixes applied
+
+  The run exposed two defects, both now fixed in wp/wp-harden-all.sh:
+
+  - The summary lied. marche-wp produced zero usable WP-CLI output and still
+    counted as Hardened: 6, Failed: 0. WP-CLI exit codes are now tracked per
+    site via PIPESTATUS, and a site with failures is reported as failed with an
+    explanation pointing at relative includes.
+  - Deprecation spam. ~50 identical E_DEPRECATED lines from the WP-CLI phar
+    buried esquare-wp's results. Now suppressed via WP_CLI_PHP_ARGS (passed
+    through env, since sudo VAR=val is refused unless sudoers permits setenv).
+    Verified the flag parses: error_reporting → 22527.
+
+  What's actually worth your attention in the log
+
+  1. esquare's booking plugin, version 10.Business.Small.SingleSite.9.0, update
+     available to 11.7 — a commercial plugin many majors behind, with a version
+     string suggesting it's not update-managed. This is the genuine exposure
+     here.
+  2. esquare's responsive-media fails plugin checksums on index.php,
+     responsive-media.php, and a .po file. Plugin checksums come from
+     wordpress.org per-version and aren't affected by the core version
+     confusion, so this one is worth opening up.
+  3. objectifemploi carries a must-use plugin named wp-security-hardening —
+     worth confirming you put it there.
+
+✻ Brewed for 4m 23s · done 15:12
+
+❯ the log comes from production server not this local pc                        
+  i copy the adl site from production to /var/www/adl/                          
+  check if false positive for check sum                                         
+
+● That changes the analysis materially — my version table compared the
+  production log against local installs that aren't the same sites. Only adl is
+  a valid comparison. Let me redo it properly on the copy.
+
+  Ran 1 shell command (ctrl+o to expand)
+● That reproduces the production log exactly — on the local copy. Note it
+  contradicts my earlier "Success" run, so let me pin down both the file and the
+  discrepancy.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The file does exist — 273 KB of PHP in wp-admin/images/, mtime 15:10 today,
+  i.e. it landed when your copy finished, after my earlier check. My "absent"
+  finding was just me looking before the copy arrived. Let me examine it
+  (read-only, never executed):
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● That's Adminer 5.4.2 — a legitimate single-file database admin tool (minified,
+  which is how it ships; no eval, no shell exec, no obfuscation). But it's a
+  full database console disguised as wordpress-logo-manager.php inside
+  wp-admin/images/. Now re-checking the other two files against the copied tree
+  — my earlier md5s were taken before the copy landed:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both are modified. Let me see what's in them:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed compromise. wp-blog-header.php has a payload appended after the
+  closing brace:
+
+  eval(gzinflate(base64_decode("...")));
+
+  That runs on every page load — it's the site's front controller. Let me decode
+  it (decode only, never execute):
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Second layer: XOR-81 over base64. Decoding the embedded strings:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both other files are backdoors too. Let me scope the infection in the copy
+  before reporting:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Not a false positive. All three findings are real malware, and I got it wrong
+  earlier — my "clean" verdict came from the pre-copy /var/www/adl, which was a
+  different, older install, checked before your copy landed at 15:10. With the
+  real production copy in place, the log reproduces exactly.
+
+  What's on adl
+
+  1. wp-blog-header.php — SEO cloaking loader
+  eval(gzinflate(base64_decode(...))) appended after the closing brace. Runs on
+  every request; it's the site's front controller. Decoded (19 KB, second layer
+  XOR-81), it:
+  - calls out to https://api.pshvpn.com/app, https://tz-2jd.pages.dev/id.html,
+    and a GitHub raw dead-drop
+    (GuilerMonley/Project-NextJs/.../ReactVersions.js)
+  - fingerprints Googlebot|Bingbot|Mediapartners-Google|AdsBot and google/bing
+    referrers, reads HTTP_CF_CONNECTING_IP / X_FORWARDED_FOR
+  - carries a spam keyword list: casino, bonus, slot, bet, sports, worldcup, 
+    buy, shop, orders, plataforma…
+
+  It's cloaking: spam to search engines and search-referred visitors, normal
+  pages to you. That's why nothing looked wrong in a browser.
+
+  2. wp-includes/update.php — unauthenticated webshell
+  POST handler dispatching on $_POST['update_type_charts'], base64-decoded, via
+  fake-but-plausible functions (wp_src_check_update_isusefull,
+  wp_delete_all_src_update_temp_backups). No such WordPress functions exist. No
+  auth check.
+
+  3. wp-admin/images/wordpress-logo-manager.php — Adminer 5.4.2
+  Genuine Adminer, unmodified — but that's the point: a full database console,
+  273 KB, disguised as a logo manager inside an images directory. Direct DB
+  access.
+
+  Scope on adl is exactly those three — no PHP in uploads, no other
+  eval(gzinflate or Adminer copies. Everything else flagged under
+  wp-includes/js|css is legitimate core (registry.php, wp-tinymce.php,
+  *.asset.php).
+
+  Also correcting
+
+  My version table was invalid — it compared the production log against
+  unrelated local installs. Same for esquare's
+  .png/projectThumbnail.jpeg/upload_log.txt: I cleared those on the local
+  esquare, which isn't production's. They're still unknown.
+
+  What this means
+
+  Per the log, the identical three-file signature is on adl, esquare, 
+  esquare-wp, marche-wp, and visit. Only objectifemploi verified clean — the
+  newest install (Dec 2025). Five production sites are compromised, and wp core 
+  verify-checksums found all three on each, so the log is trustworthy.
+
+  Two things worth weighing on entry vector: everything under /var/www runs as
+  www-data, so one site's breach reaches all of them — which fits the pattern.
+  And esquare runs booking at version 10.Business.Small.SingleSite.9.0 with 11.7
+  available, a pirated-looking commercial plugin many majors behind; esquare's
+  responsive-media also fails plugin checksums on 3 files, which now deserves a
+  real look rather than the benign reading I gave it.
+
+  What I'd do, in order
+
+  1. Don't run the hardening script as remediation.
+     chown/chmod/DISALLOW_FILE_EDIT remove none of this, and wp core update
+     would overwrite two of the three files — destroying evidence while leaving
+     the Adminer shell and any other persistence intact.
+  2. Preserve evidence first — tar each site plus webserver/PHP access logs. The
+     logs will show who hit wordpress-logo-manager.php and when, which dates
+     the breach.
+  3. Assume credential compromise. Adminer had full DB access: rotate DB
+     passwords, all WordPress salts/keys, and force a password reset for every
+     user. Audit wp_users/wp_usermeta for injected admins — esquare's admin list
+     has two gmail accounts among the ac.marche.be ones.
+  4. Then rebuild, don't clean in place — fresh core, fresh plugins from source,
+     restore only wp-content/uploads after scanning it, and drop the nulled
+     booking plugin.
+
+  The scanner you originally asked for — the thing wp-scan-all.sh was going to
+  be before you picked hardening — is now the useful tool: sweep all six sites
+  for these specific IOCs and give you a per-site verdict. Say the word and I'll
+  write it.
+
+✻ Brewed for 3m 7s · done 15:17
+
+❯ yes write the scanner                                                         
+
+● Writing it now — read-only, built around the IOCs actually found, and it must
+  work even where WP-CLI fatals (marche-wp).
+
+  Read 1 file (ctrl+o to expand)
+
+● Testing against adl (known infected), with stubbed sudo/wp so section E can't
+  hang on a password prompt:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Section A nailed all three. But my preg_replace /e regex is broken — it
+  matches any pattern containing the letter e, flagging 28 legitimate core
+  files. The /e modifier was removed in PHP 7 anyway, so the check has no value
+  on PHP 8. Removing it:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Three noise sources left. Fixing each:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now replacing section D — comparing against version.php flags almost all of
+  wp-admin, which is noise. Using the dominant install date instead:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Every remaining hit is a genuinely malicious file, and D correctly detects the
+  reset mtimes. Now the critical self-exclusion test — the scanner lives inside
+  /var/www/visit and quotes every signature it hunts:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Self-exclusion holds and the missing-site path works. Final checks — exit
+  codes and quiet mode:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● API Error: 500 Internal server error. This is a server-side issue, 
+  usually temporary — try again in a moment. If it persists, check 
+  https://status.claude.com.
+
+✻ Crunched for 5m 29s · done 15:24
+
+❯ resume                                                                        
+
+● API Error: 529 Overloaded. This is a server-side issue, usually 
+  temporary — try again in a moment. If it persists, check 
+  https://status.claude.com.
+
+✻ Cooked for 3m 18s · done 16:17
