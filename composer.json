@@ -6,7 +6,6 @@
     "ext-dom": "*",
     "ext-json": "*",
     "ext-pdo": "*",
-    "ext-redis": "*",
     "ext-simplexml": "*",
     "meilisearch/meilisearch-php": "^v1.16.0",
     "nesbot/carbon": "^3.11.0",

@@ -26,7 +26,7 @@ Visit Marche (`visitmarchebe/themewp`) is a hybrid **WordPress + Symfony 7.3** a
 
 ### Key Data Flow
 
-**Offer page**: WordPress URL rewrite (`RouterPivot`) → `single-offer.php` → `PivotRepository` → `PivotClient` (cached API call) → `PivotSerializer` (deserialize) → Twig render.
+**Offer page**: WordPress URL rewrite (`RouterPivot`) → `single-offer.php` → `PivotRepository` → `PivotClient` → `OfferStore` (indexed SQLite lookup by `codeCgt`) → `PivotSerializer` (deserialize) → Twig render.
 
 **Category page**: `category.php` → `WpRepository` fetches WP posts + Pivot offers linked via term meta → REST API `/wp-json/pivot/category_items/{catId}` → Twig render with `CommonItem` DTO.
 
@@ -36,14 +36,16 @@ Visit Marche (`visitmarchebe/themewp`) is a hybrid **WordPress + Symfony 7.3** a
 - **Repository pattern**: `PivotRepository` (Pivot API), `WpRepository` (WordPress DB)
 - **DTO**: `CommonItem` unifies WordPress posts and Pivot offers
 - **Content Levels**: Pivot API supports 5 detail levels (0=Updated through 4=OpenData), defined in `ContentLevel` enum
-- **File-based caching**: JSON cache in `/data/pivot/`
+- **Offer storage**: `pivot:fetch` writes two things to `/data/pivot/` — the raw API response as JSON (the archive), and one row per offer per content level in `offers.sqlite` (`OfferStore`). The request path reads only SQLite, so a single offer page is an indexed lookup rather than a `json_decode()` of the whole level (22 MB at `ContentLevel::Full`). If a level has no rows, `OfferStore` imports it from the JSON archive on first read; `pivot:index` does the same on demand. Override the database location with `PIVOT_DB_PATH`.
+- **Thesaurus caching**: JSON file in `/data/pivot/thesaurus_urns.json`
 
 ## Commands
 
 ### Symfony Console
 
 ```bash
-bin/console pivot:fetch          # Fetch offers from Pivot API
+bin/console pivot:fetch          # Fetch offers from Pivot API (writes JSON archive + SQLite index)
+bin/console pivot:index          # Rebuild the SQLite offer index from data/pivot/*.json
 bin/console thesaurus:fetch      # Fetch thesaurus data
 bin/console pivot:compare-levels # Compare content levels
 ```

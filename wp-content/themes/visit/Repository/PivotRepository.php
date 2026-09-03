@@ -27,15 +27,11 @@ readonly class PivotRepository
     public function loadEvents(
         bool $skip = false
     ): array {
-        $response = $this->pivotClient->fetchOffersByCriteria();
+        $events = $this->pivotClient->loadOffersByTypeIds([TypeOffreEnum::EVENT->value]);
         $today = Carbon::today();
 
         $data = [];
-        foreach ($response->getOffers() as $offer) {
-            if ($offer->typeOffre->idTypeOffre != TypeOffreEnum::EVENT->value) {
-                continue;
-            }
-
+        foreach ($events as $offer) {
             // Remove outdated dates from each event
             $offer->dates = array_values(
                 array_filter(
@@ -124,15 +120,7 @@ readonly class PivotRepository
      */
     private function loadOffersByTypeIds(array $typeIds): array
     {
-        $response = $this->pivotClient->fetchOffersByCriteria();
-
-        $offers = array_filter(
-            $response->getOffers(),
-            fn(Offer $offer) => $offer->typeOffre !== null
-                && in_array($offer->typeOffre->idTypeOffre, $typeIds, true),
-        );
-
-        $offers = array_values($offers);
+        $offers = $this->pivotClient->loadOffersByTypeIds($typeIds);
         usort($offers, fn(Offer $a, Offer $b) => strcasecmp($a->nom ?? '', $b->nom ?? ''));
 
         return $offers;
@@ -143,18 +131,14 @@ readonly class PivotRepository
      */
     public function getAllOffersShorts(): array
     {
-        $offerResponse = $this->pivotClient->fetchOffersByCriteria(ContentLevel::Full);
-
         $offers = [];
-        foreach ($offerResponse->getOffers() as $offer) {
+        foreach ($this->pivotClient->loadOffersShort(ContentLevel::Full) as $short) {
             $std = new \stdClass();
-            $std->codeCgt = $offer->codeCgt;
-            $std->name = $offer->nom;
-            $std->type = ($offer->typeOffre && $offer->typeOffre->label) ? ($offer->typeOffre->label[0]->value ?? '') : '';
+            $std->codeCgt = $short['codeCgt'];
+            $std->name = $short['nom'];
+            $std->type = $short['type'];
             $offers[] = $std;
         }
-
-        usort($offers, fn(\stdClass $a, \stdClass $b) => strcasecmp($a->name ?? '', $b->name ?? ''));
 
         return $offers;
     }
