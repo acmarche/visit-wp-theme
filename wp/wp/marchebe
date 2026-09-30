@@ -1,0 +1,78 @@
+map $uri $blogname{
+    ~^(?P<blogpath>/[^/]+/)files/(.*)       $blogpath ;
+}
+
+map $blogname $blogid{
+    default -999;
+
+    #Ref: http://wordpress.org/extend/plugins/nginx-helper/
+    #include /var/www/wordpress/wp-content/plugins/nginx-helper/map.conf ;
+}
+
+server {
+
+    server_name www.marche.be;
+
+    root /var/www/new;
+
+    index index.php index.html;
+
+    add_header 'Access-Control-Allow-Origin' '*';
+
+    location ~ ^(/[^/]+/)?files/(.+) {
+        try_files /wp-content/blogs.dir/$blogid/files/$2 /wp-includes/ms-files.php?file=$2 ;
+        access_log off;     log_not_found off; expires max;
+    }
+
+    #avoid php readfile()
+    location ^~ /blogs.dir/ {
+        internal;
+        alias /var/www/example.com/htdocs/wp-content/blogs.dir/ ;
+        access_log off;     log_not_found off; expires max;
+    }
+
+    # Ajout d'un slash a la fin des requetes */wp-admin
+    if (!-e $request_filename) {
+        rewrite /wp-admin$ $scheme://$host$request_uri/ permanent;
+        rewrite ^(/[^/]+)?(/wp-.*) $2 last;
+        rewrite ^(/[^/]+)?(/.*\.php) $2 last;
+    }
+
+    # Redirection vers index.php si le fichier n'existe pas (gestion permalien)
+    location / {
+    add_header 'Access-Control-Allow-Origin' '*';
+        # http://v2.wp-api.org/guide/problems/#query-parameters-are-ignored
+        try_files $uri $uri/ /index.php$is_args$args;
+        # This is cool because no php is touched for static content.
+        # include the "?$args" part so non-default permalinks doesn't break when using query string
+        #try_files $uri $uri/ /index.php?$args;
+    }
+
+
+    location ~ ^/wp-json/ {
+        # if permalinks not enabled
+        rewrite ^/wp-json/(.*?)$ /?rest_route=/$1 last;
+    }
+
+    location ~ \.php$ {
+    add_header 'Access-Control-Allow-Origin' '*';
+        try_files $uri =404;
+        fastcgi_pass php;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_intercept_errors on;
+    }
+
+   location ^~ /logo/ {
+        alias /var/www/wordpress/AcMarche/logo/;
+        try_files $uri $uri/ =404;
+    }
+
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+
+}

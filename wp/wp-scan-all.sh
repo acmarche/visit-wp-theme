@@ -146,11 +146,11 @@ for SITE in "${SITES[@]}"; do
     out "==================================================================="
 
     if [[ ! -d "$WP_PATH" ]]; then
-        verdict "  SKIPPED: directory does not exist."
+        verdict "  SKIPPED: $SITE - directory does not exist ($WP_PATH)."
         ((TOTAL_SKIPPED++)); continue
     fi
     if [[ ! -f "$WP_PATH/wp-load.php" ]]; then
-        verdict "  SKIPPED: no wp-load.php, not a WordPress root."
+        verdict "  SKIPPED: $SITE - no wp-load.php, not a WordPress root."
         ((TOTAL_SKIPPED++)); continue
     fi
 
@@ -201,6 +201,7 @@ for SITE in "${SITES[@]}"; do
         HITS_EXCLUDE="$CORE_OK"
         hits "$lbl" "$pat" "${CORE_DIRS[@]}" && { ((INDICATORS++)); CORE_B=1; }
     done
+    unset HITS_EXCLUDE
     # Root-level PHP files (wp-blog-header.php, wp-settings.php, index.php...)
     ROOT_PHP="$(find "$WP_PATH" -maxdepth 1 -name '*.php' 2>/dev/null)"
     if [[ -n "$ROOT_PHP" ]]; then
@@ -208,7 +209,6 @@ for SITE in "${SITES[@]}"; do
         hits "obfuscation in a root-level PHP file" \
             'eval[[:space:]]*\(|gzinflate[[:space:]]*\(|create_function[[:space:]]*\(' \
             $ROOT_PHP && { ((INDICATORS++)); CORE_B=1; }
-    unset HITS_EXCLUDE
     fi
     [[ $CORE_B -eq 0 ]] && out "  ok - no generic obfuscation in core."
 
@@ -310,6 +310,12 @@ for SITE in "${SITES[@]}"; do
         out "-- core verify-checksums --"
         if ! "${WPC[@]}" core verify-checksums >> "$REPORT" 2>&1; then
             out "  [!] core checksum verification FAILED (details above in report)"
+            # wp-harden-all.sh guards xmlrpc.php in place where nginx does not
+            # deny it, so that one modified core file is expected.
+            if grep -qF "wp-harden-all.sh: XML-RPC disabled" "$WP_PATH/xmlrpc.php" 2>/dev/null; then
+                out "      note: xmlrpc.php carries the wp-harden-all.sh 403 guard,"
+                out "      so it is expected to differ from the stock checksum."
+            fi
             ((INDICATORS++))
         else
             out "  ok - core verifies against checksums."

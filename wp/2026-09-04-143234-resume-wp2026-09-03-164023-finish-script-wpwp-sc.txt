@@ -1,0 +1,210 @@
+ ▐▛███▛█   Claude Code v2.1.258
+▝▜██████▀  Opus 5 · Claude Pro
+  ▝▝ ▝▝    /var/www/visit/wp
+
+
+❯ resume wp/2026-09-03-164023-finish-script-wpwp-scan-allsh.txt                 
+
+  Read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● The scanner is written; the run was cut off at the final exit-code/quiet-mode
+  checks. Let me finish those. First a real bug I can see — HITS_EXCLUDE is left
+  set for the root-level check:
+
+  Searched for 1 pattern, listed 1 directory, ran 15 shell commands (ctrl+o to expand)
+
+● Picked up where the run was cut off — the scanner was already written, only
+  the final exit-code and quiet-mode checks were missing. Both now run, and they
+  turned up two defects, which I fixed.
+
+  Fixed in wp/wp-scan-all.sh
+  - unset HITS_EXCLUDE sat inside the if [[ -n "$ROOT_PHP" ]] block, so the
+    root-level obfuscation check ran with section B's core-library exclusion
+    regex still active (wp-scan-all.sh:204). Harmless by luck — root files never
+    match /wp-includes/... — but it would silently swallow hits the moment that
+    exclusion list grew. Moved out of the block.
+  - Under --quiet the skip lines printed SKIPPED: no wp-load.php with no site
+    name, since the per-site header is suppressed in that mode. They now name
+    the site and the path.
+
+  Test results (fixtures in the scratchpad: a clean tree, a tree carrying all
+  three IOCs, a non-WordPress dir, and a missing site; sudo/wp stubbed so
+  section E is deterministic)
+
+  ┌─────────────────────────────┬───────────────────────────────────────────┐
+  │            check            │                  result                   │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ infected site present       │ exit 1, SUSPECT (10 indicator groups)     │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ clean site only             │ exit 0                                    │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ unknown flag / --site / -o  │ exit 2 each                               │
+  │ with no value               │                                           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ --help                      │ exit 0, prints the header block           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ --quiet                     │ stdout = verdicts + summary only; the     │
+  │                             │ 109-line report is still complete on disk │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ WP-CLI absent               │ section E skips cleanly, no false failure │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ self-exclusion, real run on │ clean — the scanner quotes every          │
+  │  /var/www/visit             │ signature it hunts and does not flag      │
+  │                             │ itself                                    │
+  └─────────────────────────────┴───────────────────────────────────────────┘
+
+  On the infected fixture all five section-A signatures fire individually, plus
+  the root-level obfuscation, the PHP under uploads/, and the PHP in
+  wp-admin/images/. On the clean fixture every section reports ok — including a
+  file with a legitimate base64_decode in wp-content, which stays out of section
+  B by design.
+
+  One thing you should know: I tried to re-run the scanner against /var/www/adl
+  as a regression test on real malware, and it now verdicts clean. That tree is
+  no longer yesterday's production copy — wp-blog-header.php is 351 bytes of
+  stock WordPress, there's no wordpress-logo-manager.php, no update_type_charts,
+  and every file is mtime 2026-03-20 owned by jfsenechal. So the infected copy
+  has been replaced or removed since 15:10 yesterday. If you deleted it, fine;
+  if you didn't, something overwrote your evidence copy. Either way the
+  production sites are still the ones that matter, and none of them has been
+  scanned yet.
+
+  To run it there:
+
+  sudo ./wp-scan-all.sh                 # all six sites, report to /var/log/
+  sudo ./wp-scan-all.sh -q              # verdicts only on screen
+  sudo ./wp-scan-all.sh -s adl -s visit # subset
+
+  Run it as root — as a normal user, unreadable files are reported as clean,
+  which is why it prints a warning when $EUID != 0. Exit 0 clean, 1 indicators
+  found, 2 usage error, so it drops straight into cron or a CI check.
+
+  The file is modified but uncommitted (git status shows  M wp/wp-scan-all.sh).
+  Say the word if you want it committed.
+
+✻ Baked for 3m 19s · done 1:25 PM
+
+❯ i have on production server this file                                         
+  /etc/nginx/global/wordpress-restrictions.conf                                 
+  see code in wp/wordpress-restrictions.conf                                    
+  it is include in each host like that                                          
+  server {                                                                      
+                                                                                
+     server_name adl.marche.be;                                                 
+     root /var/www/adl;                                                         
+                                                                                
+     include global/common_ssl.conf;                                            
+  so in wp/wp-harden-all.sh don't use .htaccess it nginx and for disable xmlrpc 
+  if the global/wordpress-restrictions.conf is not enough                       
+  or add a die() in begin of xmlrpc.php                                         
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Now I have the picture: the global nginx file already denies xmlrpc.php (plus
+  wp-config.php, uploads/*.php, dotfiles), so the Apache .htaccess step in the
+  harden script is dead weight on production. Replacing it:
+
+  Ran 10 shell commands (ctrl+o to expand)
+
+● Found a real bug in my check — the nginx config contains the regex
+  xmlrpc\.php, so an awk pattern of xmlrpc\.php can't match it (the literal
+  backslash sits between xmlrpc and .php):
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Two things to verify beyond "does the file exist": nginx picks the first 
+  matching regex location in config order, so a location ~ \.php$ defined before
+  the include would shadow the deny and hand xmlrpc.php to PHP-FPM anyway. Let
+  me make the check reflect that:
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● covered false-positived: the uploads deny rule inside the restrictions file
+  itself looks like a PHP location. A location only shadows the deny if it
+  actually executes PHP and its regex really matches /xmlrpc.php:
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Done. The Apache/.htaccess step is gone; step 3 is now nginx-aware.
+
+  Answering your question directly: yes, global/wordpress-restrictions.conf is 
+  enough for XML-RPC — but only if the include comes first in the server block.
+  Its location ~* ^/(?:xmlrpc\.php|…)$ { deny all; } returns 403 before PHP-FPM
+  is ever reached, which is strictly better than a die() in PHP. The catch is
+  nginx's regex-location rule: for location ~ blocks nginx takes the first match
+  in config order, not the most specific one. So a vhost that defines location 
+  ~ \.php$ { fastcgi_pass … } above include global/wordpress-restrictions.conf;
+  still hands /xmlrpc.php to PHP — the deny below it never runs. Your adl
+  example has the include at the top, so it's fine, but the script now checks
+  this per vhost rather than assuming it.
+
+  What step 3 does per site
+  1. Finds the enabled server block whose root is the site (sites-enabled,
+     conf.d, nginx.conf).
+  2. Flattens it the way nginx does — includes expanded in place, so ordering is
+     real, relative paths resolved against the prefix, globs expanded, nested
+     includes followed (your common_ssl.conf → wordpress-restrictions.conf chain
+     resolves correctly).
+  3. Reports one of four states:
+     - denied — the deny is reached ahead of any PHP handler → xmlrpc.php left
+       stock, checksums stay clean.
+     - shadowed — a deny exists but a PHP handler matches first → prints the
+       offending location line and says to move the include above it.
+     - open — nothing denies it, and it says if the chain never reaches
+       wordpress-restrictions.conf at all, with the exact include line to add.
+     - unknown — no matching vhost, or no /etc/nginx → nothing is changed.
+  4. Only in the shadowed and open cases does it fall back to your die() —
+     inserted right after the opening <?php:
+
+  // wp-harden-all.sh: XML-RPC disabled
+  http_response_code( 403 );
+  header( "Content-Type: text/plain; charset=utf-8" );
+  exit( "XML-RPC services are disabled on this site." );
+
+  Idempotent (marker check), syntax-checked with php -l before it replaces the
+  original, and it kills every method including pingback — unlike the
+  xmlrpc_enabled filter, which only disables the ones requiring authentication.
+
+  Two decisions worth flagging. The XML-RPC step now runs after the update step,
+  not before: wp core update reinstalls the stock xmlrpc.php and would have
+  silently thrown the guard away. And guarding the file makes wp core 
+  verify-checksums report xmlrpc.php from then on — that's your malware signal,
+  so wp-scan-all.sh now recognises the marker and annotates it as expected
+  rather than leaving you to wonder. That's also why the default is to not touch
+  a file nginx already protects; --xmlrpc-die forces it, --no-xmlrpc-die
+  reports only.
+
+  Testing — fixtures with a nested-include vhost, a shadowed vhost, one with no
+  restrictions include, a subdirectory-scoped PHP handler, and a site with no
+  vhost:
+
+  ┌─────────────────────────────────────────────────┬──────────┬────────────┐
+  │                      vhost                      │ verdict  │   guard    │
+  │                                                 │          │  applied   │
+  ├─────────────────────────────────────────────────┼──────────┼────────────┤
+  │ include → common_ssl.conf → restrictions        │ denied   │ no         │
+  ├─────────────────────────────────────────────────┼──────────┼────────────┤
+  │ location ~ \.php$ before the include            │ shadowed │ yes        │
+  ├─────────────────────────────────────────────────┼──────────┼────────────┤
+  │ no restrictions include                         │ open     │ yes        │
+  ├─────────────────────────────────────────────────┼──────────┼────────────┤
+  │ location ~ ^/wp-content/plugins/.*\.php$ first, │ denied   │ no         │
+  │  include after                                  │          │            │
+  ├─────────────────────────────────────────────────┼──────────┼────────────┤
+  │ no server block with that root                  │ unknown  │ no         │
+  └─────────────────────────────────────────────────┴──────────┴────────────┘
+
+  Two false positives got caught and fixed while testing. First, the awk pattern
+  xmlrpc\.php never matched — the config states it as a regex, so the literal
+  bytes on disk are xmlrpc\.php, backslash and all. Second, the shadow check
+  flagged the uploads deny rule inside the restrictions file itself as a PHP
+  handler; a location now only counts as a handler if its body reaches
+  fastcgi_pass/proxy_pass, and whether its regex really matches /xmlrpc.php is
+  decided by preg_match (same PCRE engine nginx uses) rather than guessed —
+  which is what clears the scoped-handler row above. Real runs are idempotent
+  across repeats and all guarded files pass php -l.
+
+  Both scripts are modified and uncommitted. Worth doing on production before
+  the first real run: sudo ./wp-harden-all.sh --dry-run --no-update to see the
+  per-vhost XML-RPC verdicts for all six sites without touching anything.
+
+✻ Cooked for 10m 5s · done 2:26 PM

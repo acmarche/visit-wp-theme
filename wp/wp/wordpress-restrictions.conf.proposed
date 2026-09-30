@@ -1,0 +1,143 @@
+# --------------------------------------------------------------------
+# WordPress hardening — nginx
+# Revised after incident MDA-2026-09-22 (Medusa cloaking toolkit)
+#
+# Include from each server{} block:
+#     include global/wordpress-restrictions.conf;
+#
+# IMPORTANT — placement: nginx evaluates regex locations in the order
+# they are defined, first match wins. This file must be included BEFORE
+# the `location ~ \.php$ { fastcgi_pass ... }` block of the vhost, or
+# the deny rules below will never be reached.
+#
+# Test before reloading:  nginx -t && systemctl reload nginx
+# --------------------------------------------------------------------
+
+autoindex off;
+
+
+# ══ 1. No PHP execution in writable or asset directories ═════════════
+#
+# THIS IS THE RULE THAT MATTERED IN MDA-2026-09-22.
+#
+# The previous version listed only `uploads|files`. The webshell ran
+# from /images/images/cache.php and was never blocked, while the same
+# rule did successfully refuse 98 probes against uploads/ on
+# marche1900.be. Any directory the sites can write into belongs here.
+#
+# Add a directory name here whenever a site gains a new writable path.
+location ~* /(?:uploads|files|images|img|imgs|media|photos|documents|cache|upgrade|tmp|temp|backup|backups)/.*\.(?:php[0-9]?|phtml|phps|phar|inc)$ {
+    deny all;
+    access_log on;
+}
+
+
+# ══ 2. Dotfiles are never served ═════════════════════════════════════
+#
+# Covers .user.ini, .htaccess, .env, .git, and the toolkit's own
+# .ms_* / .fm_* control files — including .ms_index.bak.php, which ends
+# in .php and would otherwise be executed on request.
+#
+# NOTE: this stops them being *served*. It does NOT stop PHP-FPM from
+# reading .user.ini as configuration — see the pool settings in
+# php-fpm-hardening.ini for that.
+location ~ /\.(?!well-known/) {
+    deny all;
+    access_log off;
+    log_not_found off;
+}
+
+
+# ══ 3. Known malware entry points from this incident ═════════════════
+location ~* /(?:ms-bot-prepend|ms-home-gate|ms-early-router|ms-vitrin-gate|ms-index-heal|fm_fleet_post|fm_index_heal)\.php$ {
+    deny all;
+    access_log on;
+}
+
+
+# ══ 4. Disable XML-RPC ═══════════════════════════════════════════════
+# Brute-force, pingback and amplification vector. 2,006 failed login
+# attempts were logged in the two weeks before the incident.
+location = /xmlrpc.php {
+    deny all;
+    access_log on;
+    log_not_found off;
+}
+
+
+# ══ 5. Sensitive and metadata files ══════════════════════════════════
+location ~* ^/(readme|license|licence|changelog|wp-config-sample)\.(txt|html|md)$ {
+    deny all;
+}
+
+location ~* ^/(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|pnpm-lock\.yaml|wp-cli\.ya?ml|\.?env(\..*)?)$ {
+    deny all;
+}
+
+# Backup, config and dump files left lying around.
+location ~* \.(bak|old|orig|save|swp|swo|dist|sql|sqlite|db|fla|psd|ini|log|conf|tar|gz|tgz|zip|7z)$ {
+    deny all;
+}
+
+location = /wp-config.php {
+    deny all;
+}
+
+location ~* ^/wp-config.*\.php$ {
+    deny all;
+}
+
+
+# ══ 6. Installer and upgrade endpoints ═══════════════════════════════
+location = /wp-admin/install.php {
+    deny all;
+}
+
+location = /wp-admin/setup-config.php {
+    deny all;
+}
+
+
+# ══ 7. Plugin and theme PHP files ════════════════════════════════════
+#
+# The previous version of this file had an EMPTY location block here.
+# An empty block has no fastcgi_pass, so nginx fell through to the
+# static handler and served plugin/theme PHP *source code* instead of
+# executing it — a source-disclosure bug, not a restriction.
+#
+# Left commented out deliberately: some plugins do expose direct PHP
+# endpoints (payment callbacks, AJAX handlers, image resizers), so
+# enabling this can break a site. If you want it, uncomment, then test
+# every site's front end, checkout and admin before trusting it.
+#
+# location ~* ^/wp-content/(?:plugins|themes)/.+\.(?:php[0-9]?|phtml)$ {
+#     deny all;
+# }
+
+
+# ══ 8. wp-includes has no directly callable endpoints ════════════════
+#
+# Also commented out by default. Two real exceptions exist
+# (wp-tinymce.php, and ms-files.php on multisite), so enable only after
+# confirming neither is in use on any site sharing this include.
+#
+# location ~* ^/wp-includes/.*\.(?:php[0-9]?|phtml)$ {
+#     deny all;
+# }
+
+
+# ══ 9. Login rate limiting ═══════════════════════════════════════════
+#
+# Cannot live in this include, because adding limit_req to /wp-login.php
+# means redefining that location together with its fastcgi_pass, and the
+# socket path belongs to the vhost.
+#
+# In /etc/nginx/nginx.conf, inside http{}:
+#     limit_req_zone $binary_remote_addr zone=wplogin:10m rate=20r/m;
+#
+# Then in each vhost, AFTER this include:
+#     location = /wp-login.php {
+#         limit_req zone=wplogin burst=5 nodelay;
+#         include snippets/fastcgi-php.conf;
+#         fastcgi_pass unix:/var/run/php/php8.5-fpm.sock;
+#     }
